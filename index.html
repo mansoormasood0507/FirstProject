@@ -333,6 +333,44 @@
   .note-item-snippet { font-size: 12px; color: var(--text-faint); margin-top: 4px; line-height: 1.35;
     overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 
+  /* ----- Journal (Apple-ish cards) ----- */
+  .jr-rail { display: grid; grid-template-columns: 1fr; gap: 10px; padding: 8px; }
+  .jr-card {
+    border-radius: 14px; border: 1px solid var(--border);
+    background: #fff; overflow: hidden; box-shadow: var(--shadow-sm);
+    cursor: pointer;
+  }
+  .jr-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-strong); }
+  .jr-card.active { outline: 2px solid rgba(31,78,61,.28); outline-offset: 2px; }
+  .jr-hero { height: 120px; background: linear-gradient(135deg, var(--brand-soft), #fff); position: relative; }
+  .jr-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .jr-hero-badge {
+    position: absolute; left: 10px; bottom: 10px;
+    background: rgba(255,255,255,.88); border: 1px solid rgba(0,0,0,.08);
+    padding: 3px 8px; border-radius: 999px; font-size: 11px; color: var(--text-muted);
+    backdrop-filter: blur(8px);
+  }
+  .jr-body { padding: 10px 12px 12px; }
+  .jr-title { font-weight: 650; font-size: 13px; line-height: 1.25; }
+  .jr-snippet { margin-top: 4px; font-size: 12px; color: var(--text-muted); line-height: 1.35;
+    overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .jr-tags { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* ----- Travel packing checklist ----- */
+  .pack-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .pack-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+  .pack-item:hover { background: var(--surface-2); }
+  .pack-item.done { opacity: .78; }
+  .pack-item.done .pack-text { text-decoration: line-through; color: var(--text-faint); }
+  .pack-text { flex: 1; min-width: 0; }
+  .pack-check { width: 18px; height: 18px; border-radius: 6px; border: 1.5px solid var(--border-strong); display: inline-grid; place-items: center; cursor: pointer; flex-shrink: 0; }
+  .pack-check.on { background: var(--brand); border-color: var(--brand); }
+  .pack-check.on::after {
+    content: ""; width: 11px; height: 11px; background: #fff;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.5 3.5L13 5.5' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.5 3.5L13 5.5' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+  }
+
   .notes-doc {
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
     box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
@@ -570,6 +608,8 @@
   .cal-cell {
     background: #fff; min-height: 92px; padding: 6px 8px; cursor: pointer;
     display: flex; flex-direction: column; gap: 4px;
+    min-width: 0;
+    overflow: hidden;
   }
   .cal-cell:hover { background: var(--surface-2); }
   .cal-cell-out { background: #fafafa; color: var(--text-faint); }
@@ -581,13 +621,41 @@
   }
   .cal-cell-selected { box-shadow: inset 0 0 0 2px var(--brand); }
   .cal-cell-num { font-size: 12px; font-weight: 600; color: var(--text); }
-  .cal-cell-events { display: flex; flex-direction: column; gap: 3px; min-height: 0; }
+  .cal-cell-events { display: flex; flex-direction: column; gap: 3px; min-height: 0; min-width: 0; overflow: hidden; }
   .cal-chip {
     font-size: 11px; padding: 2px 6px; border-radius: 4px;
     border: 1px solid; line-height: 1.3;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    max-width: 100%;
   }
   .cal-chip-more { background: transparent !important; color: var(--text-muted) !important; border-color: transparent !important; padding-left: 2px; }
+
+  .cal-week-wrap { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); }
+  .cal-week-cols {
+    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px;
+    min-height: 320px;
+  }
+  .cal-week-col {
+    background: #fff; padding: 0; display: flex; flex-direction: column; min-width: 0;
+    cursor: pointer;
+  }
+  .cal-week-col:hover { background: var(--surface-2); }
+  .cal-week-col-selected { box-shadow: inset 0 0 0 2px var(--brand); }
+  .cal-week-col-head {
+    padding: 8px 8px 6px; text-align: center; border-bottom: 1px solid var(--border);
+    font-size: 12px; font-weight: 600;
+  }
+  .cal-week-today .cal-week-dom {
+    background: var(--brand); color: #fff; border-radius: 50%; width: 26px; height: 26px;
+    display: inline-grid; place-items: center; margin: 4px auto 0;
+  }
+  .cal-week-dow { display: block; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; }
+  .cal-week-dom { display: block; font-size: 18px; font-weight: 650; margin-top: 2px; }
+  .cal-week-col-body { padding: 8px; flex: 1; display: flex; flex-direction: column; gap: 4px; min-height: 0; overflow: auto; }
+  .cal-day-banner {
+    font-size: 20px; font-weight: 650; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  }
 
   .row { display: flex; align-items: center; gap: 8px; }
   .muted { color: var(--text-muted); }
@@ -630,11 +698,12 @@
     </div>
 
     <button class="nav-item active" data-tab="overview"><span class="nav-icon">◎</span> Overview</button>
-    <button class="nav-item" data-tab="artifact"><span class="nav-icon">✦</span> 250 before grad</button>
     <button class="nav-item" data-tab="crm"><span class="nav-icon">☰</span> Relationships <span class="nav-count" id="count-crm">0</span></button>
     <button class="nav-item" data-tab="budget"><span class="nav-icon">$</span> Budget <span class="nav-count" id="count-budget">0</span></button>
     <button class="nav-item" data-tab="courses"><span class="nav-icon">▤</span> Courses <span class="nav-count" id="count-courses">0</span></button>
     <button class="nav-item" data-tab="notes"><span class="nav-icon">✎</span> Notes <span class="nav-count" id="count-notes">0</span></button>
+    <button class="nav-item" data-tab="travel"><span class="nav-icon">✈</span> Travel <span class="nav-count" id="count-travel">0</span></button>
+    <button class="nav-item" data-tab="journal"><span class="nav-icon">📓</span> Journal <span class="nav-count" id="count-journal">0</span></button>
     <button class="nav-item" data-tab="calendar"><span class="nav-icon">▦</span> Calendar <span class="nav-count" id="count-events">0</span></button>
     <button class="nav-item" data-tab="tasks"><span class="nav-icon">⏱</span> Tasks <span class="nav-count" id="count-tasks">0</span></button>
     <button class="nav-item" data-tab="reading"><span class="nav-icon">❍</span> Reading <span class="nav-count" id="count-reading">0</span></button>
@@ -997,13 +1066,15 @@ const WHARTON_MBA_2026_27_EVENTS = [
 
 /* ---------- State ---------- */
 const defaultData = () => ({
-  meta: { user: 'Mansoor', school: '', startedAt: new Date().toISOString() },
+  meta: { user: 'Mansoor', school: '', startedAt: new Date().toISOString(), weatherLat: null, weatherLon: null, weatherCity: 'Philadelphia' },
   contacts: [],
   budget: [],
   courses: [],
   notes: [],
   tasks: [],
   reading: [],
+  trips: [],           // travel planner
+  journal: [],         // dated entries + photos, shown on calendar
   calendarFeeds: [],   // imported feeds only
   activities: [],
   health: {
@@ -1012,6 +1083,11 @@ const defaultData = () => ({
     logs: {},
     dailyChecks: [],
     workouts: [],       // [{id, date, activity, durationMin, intensity, location, notes}]
+    cycle: {
+      periods: [],      // [{id, start, end, flow, symptoms, notes}]
+    },
+    events: [],         // [{id, date, type, severity, triggers, notes}]
+    measurements: [],   // [{id, date, weight, note, photos:[{name, dataUrl}]}]
   },
 });
 
@@ -1054,6 +1130,39 @@ function migrateLegacy(old) {
   if (!out.health.logs || typeof out.health.logs !== 'object') out.health.logs = {};
   if (!Array.isArray(out.health.dailyChecks)) out.health.dailyChecks = [];
   if (!Array.isArray(out.health.workouts)) out.health.workouts = [];
+  if (!out.health.cycle || typeof out.health.cycle !== 'object') out.health.cycle = defaultData().health.cycle;
+  if (!Array.isArray(out.health.cycle.periods)) out.health.cycle.periods = [];
+  if (!Array.isArray(out.health.events)) out.health.events = [];
+  if (!Array.isArray(out.health.measurements)) out.health.measurements = [];
+  if (!Array.isArray(out.trips)) out.trips = [];
+  if (!Array.isArray(out.journal)) out.journal = [];
+  if (!out.meta || typeof out.meta !== 'object') out.meta = defaultData().meta;
+  if (out.meta.weatherCity == null) out.meta.weatherCity = 'Philadelphia';
+  (out.notes || []).forEach(n => { if (!n.kind) n.kind = 'courses'; });
+  (out.courses || []).forEach(c => {
+    if (!c) return;
+    if (!c.term || !c.year) {
+      const m = String(c.semester || '').match(/\b(Fall|Spring|Summer)\b\s*(\d{4})/i);
+      if (m) {
+        if (!c.term) c.term = m[1][0].toUpperCase() + m[1].slice(1).toLowerCase();
+        if (!c.year) c.year = Number(m[2]);
+      }
+    }
+  });
+  (out.trips || []).forEach(t => {
+    if (!t.tripKind) t.tripKind = 'personal';
+    if (!t.status) t.status = 'Planning';
+    if (!Array.isArray(t.flights)) t.flights = [];
+    if (!Array.isArray(t.peopleMet)) t.peopleMet = [];
+    // migrate old packingList (string) -> packingItems (checklist)
+    if (!Array.isArray(t.packingItems) || t.packingItems.length === 0) {
+      const raw = (t.packingList || '').split(/\r?\n/).map(x => String(x).trim()).filter(Boolean);
+      if (raw.length) {
+        t.packingItems = raw.map(x => ({ text: x.replace(/^\d+\.\s+/, ''), done: false }));
+      }
+    }
+  });
+  (out.journal || []).forEach(j => { if (!Array.isArray(j.tags)) j.tags = []; if (!Array.isArray(j.photos)) j.photos = []; });
   if (old.crm && (!old.contacts || !old.contacts.length)) {
     out.contacts = old.crm.map(c => {
       const nameParts = (c.name || '').trim().split(/\s+/);
@@ -1108,6 +1217,10 @@ function refreshCounts() {
   $('#count-reading').textContent = data.reading.length;
   $('#count-activities').textContent = (data.activities || []).filter(a => a.status === 'Active').length;
   $('#count-health').textContent = (data.health?.medications || []).filter(m => m.active !== false).length;
+  const tripEl = $('#count-travel');
+  if (tripEl) tripEl.textContent = (data.trips || []).filter(t => t.status !== 'Cancelled').length;
+  const jrEl = $('#count-journal');
+  if (jrEl) jrEl.textContent = (data.journal || []).length;
 
   const builtinsWithEvents = builtinFeeds().reduce((n, f) => n + (f.events?.length || 0), 0);
   const importedEvents = (data.calendarFeeds || []).reduce((n, f) => n + (f.events?.length || 0), 0);
@@ -1244,7 +1357,15 @@ function openGenericModal(title, fields, onSave, current = {}) {
       return `<div class="${cls}"><label>${f.label}</label><textarea name="${f.key}" rows="${f.rows||4}" placeholder="${f.placeholder||''}">${escapeHtml(v)}</textarea></div>`;
     }
     if (f.type === 'select') {
-      const opts = f.options.map(o => `<option value="${escapeHtml(o)}" ${o===v?'selected':''}>${escapeHtml(o)}</option>`).join('');
+      const rawOptions = (typeof f.options === 'function') ? f.options() : f.options;
+      const opts = (rawOptions || []).map(o => {
+        if (o && typeof o === 'object') {
+          const val = o.value ?? '';
+          const lab = o.label ?? val;
+          return `<option value="${escapeHtml(val)}" ${String(val)===String(v)?'selected':''}>${escapeHtml(lab)}</option>`;
+        }
+        return `<option value="${escapeHtml(o)}" ${String(o)===String(v)?'selected':''}>${escapeHtml(o)}</option>`;
+      }).join('');
       return `<div class="${cls}"><label>${f.label}</label><select name="${f.key}">${opts}</select></div>`;
     }
     return `<div class="${cls}"><label>${f.label}</label><input name="${f.key}" type="${f.type||'text'}" value="${escapeHtml(v)}" placeholder="${f.placeholder||''}" ${f.step?`step="${f.step}"`:''} ${f.required?'required':''}/></div>`;
@@ -1267,23 +1388,7 @@ $('#btn-save-generic').addEventListener('click', () => {
   closeModal('modal-generic');
 });
 
-/* ============================================================
-   ARTIFACT SECTION (embedded "as-is")
-   ============================================================ */
-const CLAUDE_ARTIFACT_URL = 'https://claude.ai/public/artifacts/d4fe5bd7-e40c-40a9-8035-f5bc921413fa';
 const tabs = {};
-tabs.artifact = () => `
-  <div class="page-head">
-    <div>
-      <h1 class="page-title">250 things to do before MBA graduation</h1>
-      <p class="page-sub">Embedded from Claude artifact. If it doesn’t load, open it <a href="${CLAUDE_ARTIFACT_URL}" target="_blank" rel="noopener">in a new tab</a>.</p>
-    </div>
-    <div class="row">
-      <button class="btn" onclick="window.open('${CLAUDE_ARTIFACT_URL}','_blank')">Open artifact</button>
-    </div>
-  </div>
-  <iframe class="artifact-frame" src="${CLAUDE_ARTIFACT_URL}" loading="lazy" referrerpolicy="no-referrer"></iframe>
-`;
 
 /* ============================================================
    OVERVIEW
@@ -1365,7 +1470,7 @@ tabs.overview = () => {
       <div class="card stat"><span class="stat-label">Net (this month)</span><span class="stat-value ${net>=0?'stat-good':'stat-bad'}">${fmtMoney(net)}</span><span class="stat-help">${fmtMoney(monthIncome)} in / ${fmtMoney(monthExpense)} out</span></div>
     </div>
 
-    <div class="grid grid-2" style="margin: 12px 0 2px;">
+    <div class="grid grid-3" style="margin: 12px 0 2px;">
       <div class="card">
         <h3>Extracurriculars snapshot</h3>
         ${activeActs.length ? `
@@ -1382,14 +1487,31 @@ tabs.overview = () => {
         ` : `<div class="ov-line empty">No activities yet. Start in <a onclick="switchTab('activities')" style="cursor:pointer; color:var(--brand);">Activities</a>.</div>`}
       </div>
       <div class="card">
-        <h3>Wharton academic calendar</h3>
-        <div class="muted" style="font-size:13px;">
-          Toggle <b>Wharton MBA — 2026-27</b> on/off in <a onclick="switchTab('calendar')" style="cursor:pointer; color:var(--brand);">Calendar</a>.
-          This is a built-in event list based on the published Wharton MBA academic calendar page (dates subject to change).
-        </div>
+        <h3>Today on your calendar</h3>
+        <div class="muted" style="font-size:13px; margin-bottom:10px;">Everything across visible feeds (school, tasks, travel, health, imports, …)</div>
+        ${(() => {
+          const sorted = todaysEvents.slice().sort((a, b) => {
+            const ao = a.allDay ? 0 : 1, bo = b.allDay ? 0 : 1;
+            if (ao !== bo) return ao - bo;
+            return (a.start || '').localeCompare(b.start || '');
+          });
+          if (!sorted.length) return `<div class="ov-line empty">Nothing scheduled today.</div>`;
+          return `<div class="ov-list">${sorted.slice(0, 22).map(e => `
+            <div class="ov-line" onclick="switchTab('calendar')">
+              <span class="ov-line-dot" style="background:${e.color};"></span>
+              <span class="ov-line-title">${escapeHtml(e.title)}<div style="font-size:11px; color:var(--text-muted);">${escapeHtml(e.feedName)}${e.location?' · '+escapeHtml(e.location):''}</div></span>
+              <span class="ov-line-time">${e.allDay ? 'All day' : formatEventTime(e.start)}</span>
+            </div>`).join('')}${sorted.length > 22 ? `<div class="muted" style="font-size:12px; margin-top:8px;">+ ${sorted.length - 22} more — open Calendar for full view.</div>` : ''}</div>`;
+        })()}
         <div style="margin-top:10px;">
           <button class="btn btn-sm" onclick="switchTab('calendar')">Open calendar</button>
-          <button class="btn btn-sm" onclick="ensureFeedVisible('__wharton_mba_2627__')">Turn Wharton on</button>
+        </div>
+      </div>
+      <div class="card" id="ov-weather-card">
+        <h3>Weather</h3>
+        <div id="ov-weather" class="muted" style="font-size:13px;">Loading…</div>
+        <div style="margin-top:10px;">
+          <button type="button" class="btn btn-sm" onclick="overviewFetchWeather(true)">Refresh location</button>
         </div>
       </div>
     </div>
@@ -1503,6 +1625,85 @@ tabs.overview = () => {
     </div>
   `;
 };
+
+function wmoCodeLabel(code) {
+  const c = Number(code);
+  if ([0].includes(c)) return 'Clear';
+  if ([1, 2, 3].includes(c)) return 'Mostly clear';
+  if ([45, 48].includes(c)) return 'Fog';
+  if ([51, 53, 55].includes(c)) return 'Drizzle';
+  if ([61, 63, 65].includes(c)) return 'Rain';
+  if ([71, 73, 75].includes(c)) return 'Snow';
+  if ([95, 96, 99].includes(c)) return 'Thunderstorm';
+  return 'Mixed';
+}
+
+function overviewFetchWeather(forceGeo) {
+  const el = document.getElementById('ov-weather');
+  if (!el) return;
+  el.textContent = 'Loading…';
+  data.meta = data.meta || {};
+  const apply = (lat, lon) => {
+    data.meta.weatherLat = lat;
+    data.meta.weatherLon = lon;
+    saveData();
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,relative_humidity_2m,apparent_temperature`;
+    fetch(url)
+      .then(r => r.json())
+      .then(j => {
+        const t = j.current?.temperature_2m;
+        const app = j.current?.apparent_temperature;
+        const code = j.current?.weather_code;
+        const hum = j.current?.relative_humidity_2m;
+        if (t == null) { el.textContent = 'Weather unavailable.'; return; }
+        const f = (t * 9/5) + 32;
+        const appF = ((app ?? t) * 9/5) + 32;
+        const place = data.meta.weatherCity || 'Saved location';
+        el.innerHTML = `<div style="font-size:28px; font-weight:650; color:var(--text);">${Math.round(t)}°C <span style="color:var(--text-faint); font-weight:600;">/</span> ${Math.round(f)}°F</div>
+          <div style="margin-top:6px;">Feels like ${Math.round(app ?? t)}°C / ${Math.round(appF)}°F · ${escapeHtml(wmoCodeLabel(code))}</div>
+          <div class="muted" style="margin-top:8px;">${escapeHtml(place)}${hum != null ? ' · ' + hum + '% humidity' : ''}</div>`;
+      })
+      .catch(() => { el.textContent = 'Could not load weather.'; });
+  };
+  if (!forceGeo && data.meta.weatherLat != null && data.meta.weatherLon != null) {
+    apply(data.meta.weatherLat, data.meta.weatherLon);
+    return;
+  }
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        data.meta.weatherCity = 'Near you';
+        apply(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        data.meta.weatherCity = 'Philadelphia (fallback)';
+        apply(39.9526, -75.1652);
+      },
+      { maximumAge: 600000, timeout: 12000 }
+    );
+  } else {
+    data.meta.weatherCity = 'Philadelphia (fallback)';
+    apply(39.9526, -75.1652);
+  }
+}
+
+tabs.overviewInit = () => { overviewFetchWeather(false); };
+
+function bindDebouncedInput(id, key, delayMs = 180) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (!bindDebouncedInput._timers) bindDebouncedInput._timers = {};
+  const handler = () => {
+    window[key] = el.value;
+    clearTimeout(bindDebouncedInput._timers[id]);
+    bindDebouncedInput._timers[id] = setTimeout(() => {
+      // avoid re-rendering mid-composition (IME)
+      if (el.isComposing) return;
+      render();
+    }, delayMs);
+  };
+  ['input','keyup','search','change'].forEach(ev => el.addEventListener(ev, handler));
+}
 
 function ensureFeedVisible(id) {
   isFeedVisible(id);
@@ -1735,16 +1936,16 @@ function crmContacts() {
 tabs.crmInit = () => {
   const sub = window._crmSub || 'contacts';
   if (sub === 'contacts') {
-    const bind = (id, key, ev) => {
+    bindDebouncedInput('crm-search','_crmQuery', 160);
+    const bind = (id, key) => {
       const el = $('#'+id);
       if (!el) return;
-      el.addEventListener(ev, () => { window[key] = el.value; render(); });
+      el.addEventListener('change', () => { window[key] = el.value; render(); });
     };
-    bind('crm-search','_crmQuery','input');
-    bind('crm-filter-cat','_crmCat','change');
-    bind('crm-filter-tag','_crmTag','change');
-    bind('crm-filter-status','_crmStatus','change');
-    bind('crm-sort','_crmSort','change');
+    bind('crm-filter-cat','_crmCat');
+    bind('crm-filter-tag','_crmTag');
+    bind('crm-filter-status','_crmStatus');
+    bind('crm-sort','_crmSort');
   }
 };
 
@@ -2026,6 +2227,7 @@ const budgetFields = [
 
 tabs.budget = () => {
   const today = new Date();
+  const todayK = todayISO();
   const monthKey = today.toISOString().slice(0,7);
   const months = [...new Set(data.budget.map(b=>(b.date||'').slice(0,7)).filter(Boolean))].sort().reverse();
   const selectedMonth = window._budgetMonth || monthKey;
@@ -2044,6 +2246,11 @@ tabs.budget = () => {
 
   const monthOpts = [monthKey, ...months.filter(m=>m!==monthKey)];
 
+  const plannedTrips = (data.trips || []).filter(t => t.status === 'Confirmed' && t.startDate
+    && Number(t.budgetAmount || 0) > 0 && (t.startDate >= todayK))
+    .slice().sort((a, b) => (a.startDate || '').localeCompare(b.startDate || ''));
+  const plannedTripsTotal = plannedTrips.reduce((s, t) => s + Number(t.budgetAmount || 0), 0);
+
   return `
     <div class="page-head">
       <div><h1 class="page-title">Budget</h1><p class="page-sub">${data.budget.length} total entries</p></div>
@@ -2051,6 +2258,29 @@ tabs.budget = () => {
         <select class="filter" id="budget-month">${monthOpts.map(m => `<option value="${m}" ${m===selectedMonth?'selected':''}>${m}</option>`).join('')}</select>
         <button class="btn btn-primary" onclick="budgetAdd()"><span class="plus">+</span> Add entry</button>
       </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <h3>Upcoming planned expenses (confirmed trips)</h3>
+      <p class="muted" style="font-size:13px; margin-bottom:12px;">Budgets from trips marked <b>Confirmed</b> with a start date today or later. Saving a trip also mirrors the amount here as a planned Travel line.</p>
+      ${plannedTrips.length ? `
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Trip</th><th>When</th><th>Type</th><th style="text-align:right;">Planned</th><th></th></tr></thead>
+            <tbody>
+            ${plannedTrips.map(t => `
+              <tr>
+                <td><b>${escapeHtml(t.title || t.destination || 'Trip')}</b>${t.destination && t.title ? `<div class="muted" style="font-size:12px;">${escapeHtml(t.destination)}</div>` : ''}</td>
+                <td>${fmtDate(t.startDate)}${t.endDate && t.endDate !== t.startDate ? ' – ' + fmtDate(t.endDate) : ''}</td>
+                <td><span class="badge badge-brand">${escapeHtml(t.tripKind === 'school' ? 'School' : 'Personal')}</span></td>
+                <td style="text-align:right; font-weight:600;">${fmtMoney(Number(t.budgetAmount||0))}</td>
+                <td style="text-align:right;"><button type="button" class="btn btn-sm" onclick="switchTab('travel'); window._travelPick='${t.id}'; render();">Trip</button></td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:12px; font-weight:600;">Total planned (upcoming confirmed): ${fmtMoney(plannedTripsTotal)}</div>
+      ` : `<div class="muted" style="font-size:13px;">No upcoming confirmed trip budgets. Add trips in <a onclick="switchTab('travel')" style="cursor:pointer; color:var(--brand);">Travel</a>.</div>`}
     </div>
 
     <div class="grid grid-4" style="margin-bottom:16px;">
@@ -2102,6 +2332,391 @@ function budgetEdit(id) { const e = data.budget.find(x=>x.id===id); openGenericM
 function budgetDel(id) { if(!confirm('Delete?')) return; data.budget = data.budget.filter(x=>x.id!==id); saveData(); render(); toast('Deleted'); }
 
 /* ============================================================
+   TRAVEL
+   ============================================================ */
+const tripFields = [
+  { key:'title', label:'Trip name *', required:true, full:true },
+  { key:'tripKind', label:'Trip type', type:'select', options:[{ value:'school', label:'School' }, { value:'personal', label:'Personal' }], required:true },
+  { key:'status', label:'Status', type:'select', options:['Confirmed','Planning','Idea','Cancelled'], required:true },
+  { key:'startDate', label:'Start date *', type:'date', required:true },
+  { key:'endDate', label:'End date', type:'date' },
+  { key:'destination', label:'Destination' },
+  { key:'purpose', label:'Purpose', type:'textarea', rows:2, full:true },
+  { key:'budgetAmount', label:'Planned budget ($)', type:'number', step:'0.01' },
+  { key:'notes', label:'Notes', type:'textarea', rows:2, full:true },
+];
+
+const flightFields = [
+  { key:'confirmationCode', label:'Confirmation #' },
+  { key:'airline', label:'Airline' },
+  { key:'from', label:'From' },
+  { key:'to', label:'To' },
+  { key:'departISO', label:'Departure (local)', type:'datetime-local' },
+  { key:'arriveISO', label:'Arrival (local)', type:'datetime-local' },
+  { key:'notes', label:'Notes', type:'textarea', rows:2, full:true },
+];
+
+const tripPersonFields = [
+  { key:'name', label:'Name *', required:true },
+  { key:'email', label:'Email', type:'email' },
+];
+
+function tripAdd() {
+  openGenericModal('Add trip', tripFields, (v) => {
+    const t = { ...v, id: uid(), flights: [], peopleMet: [], tripKind: v.tripKind || 'personal' };
+    data.trips.push(t);
+    saveTripInner(t);
+    saveData(); render(); toast('Trip added');
+  });
+}
+
+function tripEdit(id) {
+  const t = data.trips.find(x => x.id === id);
+  if (!t) return;
+  openGenericModal('Edit trip', tripFields, (v) => {
+    Object.assign(t, v);
+    saveTripInner(t);
+    saveData(); render(); toast('Saved');
+  }, t);
+}
+
+function tripDel(id) {
+  if (!confirm('Delete this trip and remove linked budget lines / packing tasks?')) return;
+  const t = data.trips.find(x => x.id === id);
+  if (t?.budgetEntryId) data.budget = data.budget.filter(b => b.id !== t.budgetEntryId);
+  if (t?.packingTaskId) data.tasks = data.tasks.filter(x => x.id !== t.packingTaskId);
+  data.trips = data.trips.filter(x => x.id !== id);
+  saveData(); render(); toast('Deleted');
+}
+
+function tripAddFlight(tripId) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  openGenericModal('Add flight segment', flightFields, (v) => {
+    trip.flights = trip.flights || [];
+    const depRaw = v.departISO ? new Date(v.departISO) : null;
+    const arrRaw = v.arriveISO ? new Date(v.arriveISO) : null;
+    const dep = depRaw && !isNaN(depRaw.getTime()) ? depRaw.toISOString() : '';
+    const arr = arrRaw && !isNaN(arrRaw.getTime()) ? arrRaw.toISOString() : '';
+    trip.flights.push({
+      id: uid(),
+      confirmationCode: v.confirmationCode || '',
+      airline: v.airline || '',
+      from: v.from || '',
+      to: v.to || '',
+      departISO: dep,
+      arriveISO: arr,
+      departure: dep,
+      arrival: arr,
+      notes: v.notes || ''
+    });
+    trip.updatedAt = Date.now();
+    saveData(); render(); toast('Flight added');
+  });
+}
+
+function tripRemoveFlight(tripId, flightId) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip?.flights) return;
+  trip.flights = trip.flights.filter(f => f.id !== flightId);
+  saveData(); render();
+}
+
+function tripAddPerson(tripId) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  openGenericModal('Person you met', tripPersonFields, (v) => {
+    trip.peopleMet = trip.peopleMet || [];
+    trip.peopleMet.push({ id: uid(), name: v.name || '', email: v.email || '', linkedContactId: '' });
+    saveData(); render(); toast('Added');
+  });
+}
+
+function tripPersonToCRM(tripId, personId) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  const p = (trip.peopleMet || []).find(x => x.id === personId);
+  if (!p || !(p.name || '').trim()) { toast('Add a name first'); return; }
+  const parts = p.name.trim().split(/\s+/);
+  const c = {
+    id: uid(),
+    firstName: parts[0] || '',
+    lastName: parts.slice(1).join(' '),
+    category: trip.tripKind === 'school' ? 'Classmate' : 'Industry Contact',
+    title: '', company: '', industry: '', email: p.email || '', phone: '', linkedin: '',
+    school: '', classYear: '', section: '', clubs: '',
+    location: trip.destination || '', hometown: '',
+    howWeMet: `Met during trip: ${trip.title || trip.destination || ''}`,
+    interests: '', importantDate: '', importantDateLabel: '',
+    cadence: 'monthly', starred: false,
+    tags: [], background: '', createdAt: Date.now(), updatedAt: Date.now(),
+    interactions: []
+  };
+  data.contacts.push(c);
+  p.linkedContactId = c.id;
+  saveData(); render(); toast('Added to CRM');
+}
+
+tabs.travel = () => {
+  const trips = (data.trips || []).slice().sort((a, b) => (a.startDate || '9999').localeCompare(b.startDate || '9999'));
+  const upcoming = trips.filter(t => t.status !== 'Cancelled' && t.startDate && t.startDate >= todayISO());
+  const rows = trips.map(t => {
+    const flights = (t.flights || []).map(f => `
+      <tr><td>${escapeHtml(f.confirmationCode || '—')}</td><td>${escapeHtml(f.airline || '')}</td><td>${escapeHtml(f.from || '')}</td><td>${escapeHtml(f.to || '')}</td>
+      <td style="font-size:12px;">${(f.departISO || f.departure) ? escapeHtml(datetimeLocalToDisplay(f.departISO || f.departure)) : '—'}</td>
+      <td style="font-size:12px;">${(f.arriveISO || f.arrival) ? escapeHtml(datetimeLocalToDisplay(f.arriveISO || f.arrival)) : '—'}</td>
+      <td><button type="button" class="btn btn-sm btn-danger" onclick="tripRemoveFlight('${t.id}','${f.id}')">×</button></td></tr>`).join('');
+    const people = (t.peopleMet || []).map(p => `
+      <tr><td>${escapeHtml(p.name)}</td><td>${escapeHtml(p.email || '')}</td><td>${p.linkedContactId ? '<span class="badge badge-ok">In CRM</span>' : `<button type="button" class="btn btn-sm" onclick="tripPersonToCRM('${t.id}','${p.id}')">Add to CRM</button>`}</td></tr>`).join('');
+    const packItems = packingItemsFromTrip(t);
+    const packHtml = packItems.length ? `
+      <div class="pack-list">
+        ${packItems.map((it, idx) => `
+          <div class="pack-item ${it.done ? 'done' : ''}">
+            <span class="pack-check ${it.done ? 'on' : ''}" onclick="tripTogglePackItem('${t.id}', ${idx})"></span>
+            <div class="pack-text">${escapeHtml(it.text)}</div>
+          </div>
+        `).join('')}
+      </div>
+    ` : `<div class="muted" style="font-size:13px;">No packing items yet.</div>`;
+
+    return `
+      <div class="card" style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
+          <div>
+            <div style="font-weight:650; font-size:16px;">${escapeHtml(t.title || t.destination || 'Trip')}</div>
+            <div class="muted" style="font-size:13px; margin-top:4px;">${escapeHtml(t.destination || '—')} · ${fmtDate(t.startDate)}${t.endDate && t.endDate !== t.startDate ? ' – ' + fmtDate(t.endDate) : ''}</div>
+            <div style="margin-top:8px;">
+              <span class="badge ${t.tripKind === 'school' ? 'badge-brand' : ''}">${t.tripKind === 'school' ? 'School' : 'Personal'}</span>
+              <span class="badge ${t.status === 'Confirmed' ? 'badge-ok' : t.status === 'Cancelled' ? 'badge-danger' : 'badge-warn'}">${escapeHtml(t.status || '')}</span>
+              ${t.budgetAmount ? `<span class="muted" style="margin-left:8px;">Budget ${fmtMoney(Number(t.budgetAmount))}</span>` : ''}
+            </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn-sm" onclick="tripEdit('${t.id}')">Edit trip</button>
+            <button type="button" class="btn btn-sm" onclick="tripAddFlight('${t.id}')">+ Flight</button>
+            <button type="button" class="btn btn-sm" onclick="tripAddPerson('${t.id}')">+ Person</button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="tripDel('${t.id}')">Delete</button>
+          </div>
+        </div>
+        ${t.notes ? `<div class="muted" style="margin-top:10px; font-size:13px; white-space:pre-wrap;">${escapeHtml(t.notes)}</div>` : ''}
+        <div style="margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div><b>Packing checklist</b> <span class="muted" style="font-size:12px;">(check it off here; task due 2 days before start)</span></div>
+            <div class="row">
+              <button type="button" class="btn btn-sm" onclick="tripRegeneratePacking('${t.id}')">Regenerate</button>
+              <button type="button" class="btn btn-sm" onclick="const x=prompt('Add an item'); if(x) tripAddPackItem('${t.id}', x);">+ Item</button>
+            </div>
+          </div>
+          ${packHtml}
+        </div>
+
+        <div style="margin-top:16px;">
+          <h3 style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">Flights</h3>
+          ${(t.flights || []).length ? `
+          <div class="tbl-wrap"><table class="tbl">
+            <thead><tr><th>Conf</th><th>Airline</th><th>From</th><th>To</th><th>Depart</th><th>Arrive</th><th></th></tr></thead>
+            <tbody>${flights}</tbody>
+          </table></div>` : `<div class="muted" style="font-size:13px;">No flights logged — add confirmation codes and times (they appear on the calendar).</div>`}
+        </div>
+        <div style="margin-top:16px;">
+          <h3 style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">People you met</h3>
+          ${(t.peopleMet || []).length ? `
+          <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Email</th><th></th></tr></thead><tbody>${people}</tbody></table></div>`
+          : `<div class="muted" style="font-size:13px;">Nobody added yet.</div>`}
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="page-head">
+      <div><h1 class="page-title">Travel</h1><p class="page-sub">${upcoming.length} upcoming · ${trips.length} total trips</p></div>
+      <button type="button" class="btn btn-primary" onclick="tripAdd()"><span class="plus">+</span> Add trip</button>
+    </div>
+    <p class="muted" style="font-size:13px; max-width:880px; margin-bottom:18px;">Trip dates and flights sync to Calendar when <b>Travel &amp; flights</b> is visible. Confirmed trip budgets create planned Travel rows in Budget. Packing lists become high-priority tasks due two days before departure.</p>
+    ${trips.length ? rows : `<div class="empty-state"><h4>No trips yet</h4><p>Add a trek, interview trip, or vacation.</p></div>`}
+  `;
+};
+
+/* ============================================================
+   JOURNAL
+   ============================================================ */
+const JOURNAL_TAG_PRESETS = [
+  'School event', 'Club event', 'Guest speaker in class', 'Guest speaker event',
+  'Class', 'Recruiting', 'Networking', 'Travel', 'Friends', 'Family', 'Health',
+  'Reflection', 'Idea', 'Win', 'Gratitude'
+];
+
+function journalAdd() {
+  const j = { id: uid(), date: todayISO(), title: '', body: '', tags: [], photos: [] };
+  data.journal.unshift(j);
+  window._journalPick = j.id;
+  saveData(); render(); toast('New entry');
+}
+
+function journalUpdate(id, key, val) {
+  const j = data.journal.find(x => x.id === id);
+  if (!j) return;
+  j[key] = val;
+  j.updatedAt = Date.now();
+  saveData();
+}
+
+function journalDel(id) {
+  if (!confirm('Delete this journal entry?')) return;
+  data.journal = data.journal.filter(x => x.id !== id);
+  window._journalPick = null;
+  saveData(); render(); toast('Deleted');
+}
+
+function journalPhotoAdd(id, inputEl) {
+  const j = data.journal.find(x => x.id === id);
+  if (!j || !inputEl.files?.[0]) return;
+  const file = inputEl.files[0];
+  const r = new FileReader();
+  r.onload = () => {
+    j.photos = j.photos || [];
+    j.photos.push({ name: file.name, dataUrl: r.result });
+    saveData(); render(); toast('Photo added');
+  };
+  r.readAsDataURL(file);
+  inputEl.value = '';
+}
+
+function journalPhotoDel(journalId, idx) {
+  const j = data.journal.find(x => x.id === journalId);
+  if (!j?.photos) return;
+  j.photos.splice(idx, 1);
+  saveData(); render();
+}
+
+function journalSetTags(id, csv) {
+  const j = data.journal.find(x => x.id === id);
+  if (!j) return;
+  const tags = String(csv || '')
+    .split(',')
+    .map(t => t.trim())
+    .filter(Boolean)
+    .slice(0, 24);
+  j.tags = tags;
+  j.updatedAt = Date.now();
+  saveData();
+}
+
+function journalToggleTag(id, tag) {
+  const j = data.journal.find(x => x.id === id);
+  if (!j) return;
+  j.tags = j.tags || [];
+  if (j.tags.includes(tag)) j.tags = j.tags.filter(t => t !== tag);
+  else j.tags.push(tag);
+  j.updatedAt = Date.now();
+  saveData();
+  render();
+}
+
+tabs.journal = () => {
+  const q = (window._jrQuery || '').toLowerCase();
+  const tagF = window._jrTag || '';
+  const entries = (data.journal || [])
+    .filter(j => {
+      if (tagF && !(j.tags || []).includes(tagF)) return false;
+      if (!q) return true;
+      const hay = [j.title, j.body, (j.tags || []).join(' ')].join(' ').toLowerCase();
+      return hay.includes(q);
+    })
+    .slice()
+    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const activeId = window._journalPick || (entries[0] && entries[0].id);
+  const active = entries.find(e => e.id === activeId);
+
+  const rail = entries.length === 0
+    ? `<div class="muted" style="padding:24px; font-size:13px; text-align:center;">No journal entries. Click <b>New entry</b>.</div>`
+    : entries.map(en => {
+      const isAct = en.id === activeId;
+      const snip = (en.body || '').replace(/<[^>]+>/g, '').slice(0, 100);
+      const hero = (en.photos || [])[0]?.dataUrl;
+      const tags = (en.tags || []).slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+      return `
+        <div class="jr-card ${isAct ? 'active' : ''}" onclick="window._journalPick='${en.id}'; render();">
+          <div class="jr-hero">
+            ${hero ? `<img src="${hero}" alt=""/>` : ''}
+            <div class="jr-hero-badge">${fmtDate(en.date)}${(en.photos || []).length ? ' · 📷 ' + (en.photos || []).length : ''}</div>
+          </div>
+          <div class="jr-body">
+            <div class="jr-title ${(!en.title) ? 'untitled' : ''}">${escapeHtml(en.title || 'Untitled')}</div>
+            ${snip ? `<div class="jr-snippet">${escapeHtml(snip)}${en.body && en.body.length > 100 ? '…' : ''}</div>` : ''}
+            ${(en.tags || []).length ? `<div class="jr-tags">${tags}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  return `
+    <div class="page-head">
+      <div><h1 class="page-title">Journal</h1><p class="page-sub">${(data.journal || []).length} entries · dates link to Calendar</p></div>
+      <div class="row">
+        <button type="button" class="btn" onclick="window._jrQuery=''; window._jrTag=''; render();">Clear filters</button>
+        <button type="button" class="btn btn-primary" onclick="journalAdd()"><span class="plus">+</span> New entry</button>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="search-wrap"><input id="jr-search" placeholder="Search journal…" value="${escapeHtml(window._jrQuery||'')}"/></div>
+      <select class="filter" id="jr-tag">
+        <option value="">All tags</option>
+        ${JOURNAL_TAG_PRESETS.map(t => `<option value="${escapeHtml(t)}" ${t===tagF?'selected':''}>${escapeHtml(t)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="notes-layout">
+      <aside class="notes-rail"><div class="jr-rail">${rail}</div></aside>
+      ${active ? `
+      <div class="notes-doc">
+        <div class="notes-doc-head">
+          <input class="notes-doc-title" value="${escapeHtml(active.title || '')}" placeholder="Title" oninput="journalUpdate('${active.id}','title',this.value);"/>
+          <div class="notes-doc-meta">
+            <div class="meta-cell"><label class="muted" style="font-size:11px;">Date</label><input type="date" value="${active.date || todayISO()}" onchange="journalUpdate('${active.id}','date',this.value); render();"/></div>
+            <div class="meta-cell" style="flex:1; min-width:220px;">
+              <input id="jr-tags" placeholder="Tags (comma-separated)" value="${escapeHtml((active.tags||[]).join(', '))}" onchange="journalSetTags('${active.id}', this.value);" style="width:100%;"/>
+            </div>
+            <button type="button" class="btn btn-sm btn-danger" onclick="journalDel('${active.id}')">Delete</button>
+          </div>
+          <div class="pill-row" style="margin-top:10px;">
+            ${JOURNAL_TAG_PRESETS.slice(0, 12).map(t => {
+              const on = (active.tags || []).includes(t);
+              return `<span class="badge ${on ? 'badge-brand' : ''}" style="cursor:pointer;" onclick="journalToggleTag('${active.id}','${escapeHtml(t)}')">${escapeHtml(t)}</span>`;
+            }).join('')}
+          </div>
+        </div>
+        <textarea id="journal-body" data-entry-id="${active.id}" style="width:100%; min-height:220px; padding:12px; border:1px solid var(--border-strong); border-radius:8px;" placeholder="Write…"
+          oninput="journalUpdate('${active.id}','body',this.value);"></textarea>
+        <div style="margin-top:14px;">
+          <label class="btn btn-sm" style="cursor:pointer;">
+            + Photo
+            <input type="file" accept="image/*" style="display:none;" onchange="journalPhotoAdd('${active.id}', this);"/>
+          </label>
+        </div>
+        ${(active.photos || []).length ? `<div class="pill-row" style="margin-top:12px;">${active.photos.map((ph, i) => `
+          <div style="display:inline-block; position:relative;">
+            <img src="${ph.dataUrl}" alt="" style="max-height:120px; border-radius:8px; border:1px solid var(--border);"/>
+            <button type="button" class="btn btn-sm btn-danger" style="position:absolute; top:4px; right:4px;" onclick="journalPhotoDel('${active.id}',${i})">×</button>
+          </div>`).join('')}</div>` : ''}
+        <p class="muted" style="font-size:12px; margin-top:12px;">Shown on Calendar when <b>Journal entries</b> is toggled on.</p>
+      </div>` : `<div class="notes-doc"><div class="empty-state" style="margin:24px;"><h4>No entry selected</h4></div></div>`}
+    </div>
+  `;
+};
+
+tabs.journalInit = () => {
+  const s = $('#jr-search');
+  if (s) bindDebouncedInput('jr-search', '_jrQuery', 160);
+  const t = $('#jr-tag');
+  if (t) t.addEventListener('change', () => { window._jrTag = t.value; render(); });
+  const ta = $('#journal-body');
+  if (!ta) return;
+  const j = data.journal.find(x => x.id === ta.dataset.entryId);
+  if (j) ta.value = j.body || '';
+};
+
+/* ============================================================
    COURSES
    ============================================================ */
 const courseFields = [
@@ -2109,27 +2724,58 @@ const courseFields = [
   { key:'code', label:'Course code', placeholder:'e.g. FIN B6300' },
   { key:'professor', label:'Professor' },
   { key:'credits', label:'Credits', type:'number', step:'0.5' },
-  { key:'semester', label:'Semester', placeholder:'e.g. Fall 2026' },
+  { key:'term', label:'Term', type:'select', options:['Fall','Spring','Summer'] },
+  { key:'year', label:'Year', type:'number', step:'1', placeholder:'e.g. 2026' },
+  { key:'semester', label:'Semester (optional)', placeholder:'e.g. Fall 2026' },
   { key:'schedule', label:'Schedule', placeholder:'e.g. Mon/Wed 10:30am' },
   { key:'grade', label:'Grade / Status', placeholder:'A, A-, In progress' },
   { key:'syllabus', label:'Syllabus link', placeholder:'URL or file path', full:true },
   { key:'notes', label:'Notes', type:'textarea', rows:3, full:true },
 ];
 
-tabs.courses = () => `
+function courseDisplaySemester(c) {
+  const term = c.term || '';
+  const year = c.year || '';
+  if (term && year) return `${term} ${year}`;
+  return c.semester || '—';
+}
+
+tabs.courses = () => {
+  const termF = window._courseTerm || '';
+  const yearF = window._courseYear || '';
+  const years = [...new Set((data.courses||[]).map(c => String(c.year||'').trim()).filter(Boolean))].sort();
+
+  const filtered = (data.courses || []).filter(c => {
+    if (termF && String(c.term||'') !== termF) return false;
+    if (yearF && String(c.year||'') !== yearF) return false;
+    return true;
+  });
+
+  return `
   <div class="page-head">
-    <div><h1 class="page-title">Courses</h1><p class="page-sub">${data.courses.length} courses</p></div>
+    <div><h1 class="page-title">Courses</h1><p class="page-sub">${filtered.length} shown · ${data.courses.length} total</p></div>
     <button class="btn btn-primary" onclick="courseAdd()"><span class="plus">+</span> Add course</button>
   </div>
+  <div class="toolbar">
+    <select class="filter" id="course-term">
+      <option value="" ${!termF?'selected':''}>All terms</option>
+      ${['Fall','Spring','Summer'].map(t => `<option value="${t}" ${t===termF?'selected':''}>${t}</option>`).join('')}
+    </select>
+    <select class="filter" id="course-year">
+      <option value="" ${!yearF?'selected':''}>All years</option>
+      ${years.map(y => `<option value="${escapeHtml(y)}" ${y===yearF?'selected':''}>${escapeHtml(y)}</option>`).join('')}
+    </select>
+    <button type="button" class="btn" onclick="window._courseTerm=''; window._courseYear=''; render();">Clear</button>
+  </div>
   <div class="tbl-wrap">
-    ${data.courses.length ? `
+    ${filtered.length ? `
     <table class="tbl">
-      <thead><tr><th>Course</th><th>Professor</th><th>Semester</th><th>Schedule</th><th>Credits</th><th>Grade</th><th></th></tr></thead>
+      <thead><tr><th>Course</th><th>Professor</th><th>Term</th><th>Schedule</th><th>Credits</th><th>Grade</th><th></th></tr></thead>
       <tbody>
-      ${data.courses.map(c => `<tr>
+      ${filtered.map(c => `<tr>
         <td><div style="font-weight:600;">${escapeHtml(c.name)}</div><div style="font-size:12px; color:var(--text-muted);">${escapeHtml(c.code||'')}</div></td>
         <td>${escapeHtml(c.professor||'—')}</td>
-        <td>${escapeHtml(c.semester||'—')}</td>
+        <td>${escapeHtml(courseDisplaySemester(c))}</td>
         <td>${escapeHtml(c.schedule||'—')}</td>
         <td>${c.credits||'—'}</td>
         <td>${c.grade ? `<span class="badge badge-ok">${escapeHtml(c.grade)}</span>` : '—'}</td>
@@ -2137,9 +2783,17 @@ tabs.courses = () => `
       </tr>`).join('')}
       </tbody>
     </table>
-    ` : `<div class="empty-state"><h4>No courses yet</h4><p>Add a course with the button above.</p></div>`}
+    ` : `<div class="empty-state"><h4>No matches</h4><p>Try clearing filters.</p></div>`}
   </div>
-`;
+  `;
+};
+
+tabs.coursesInit = () => {
+  const t = $('#course-term');
+  if (t) t.addEventListener('change', () => { window._courseTerm = t.value; render(); });
+  const y = $('#course-year');
+  if (y) y.addEventListener('change', () => { window._courseYear = y.value; render(); });
+};
 function courseAdd() { openGenericModal('Add course', courseFields, (v) => { v.id = uid(); data.courses.push(v); saveData(); render(); toast('Added'); }); }
 function courseEdit(id) { const c = data.courses.find(x=>x.id===id); openGenericModal('Edit course', courseFields, (v)=>{ Object.assign(c, v); saveData(); render(); toast('Saved'); }, c); }
 function courseDel(id) { if(!confirm('Delete this course?')) return; data.courses = data.courses.filter(x=>x.id!==id); saveData(); render(); toast('Deleted'); }
@@ -2147,12 +2801,20 @@ function courseDel(id) { if(!confirm('Delete this course?')) return; data.course
 /* ============================================================
    NOTES
    ============================================================ */
+const NOTE_KINDS = ['courses','events','conferences','clubs','others'];
+const NOTE_KIND_LABEL = { courses:'Courses', events:'Events', conferences:'Conferences', clubs:'Clubs', others:'Others' };
+
 tabs.notes = () => {
+  const kindFilter = window._noteKind || 'all';
   const courseFilter = window._noteCourse || 'all';
   const q = (window._noteQuery || '').toLowerCase();
   const filtered = data.notes.filter(n => {
-    if (courseFilter !== 'all' && courseFilter !== '__no_course__' && n.courseId !== courseFilter) return false;
-    if (courseFilter === '__no_course__' && n.courseId) return false;
+    const nk = n.kind || 'courses';
+    if (kindFilter !== 'all' && nk !== kindFilter) return false;
+    if (nk === 'courses') {
+      if (courseFilter !== 'all' && courseFilter !== '__no_course__' && n.courseId !== courseFilter) return false;
+      if (courseFilter === '__no_course__' && n.courseId) return false;
+    }
     if (!q) return true;
     return [n.title, plainText(n.body), n.tags].some(v => (v||'').toLowerCase().includes(q));
   }).sort((a,b)=> (b.date||'').localeCompare(a.date||''));
@@ -2162,12 +2824,21 @@ tabs.notes = () => {
 
   const groups = {};
   filtered.forEach(n => {
-    const key = n.courseId && data.courses.find(c=>c.id===n.courseId) ? n.courseId : '__none__';
+    const nk = n.kind || 'courses';
+    let key;
+    if (nk === 'courses') {
+      key = n.courseId && data.courses.find(c=>c.id===n.courseId) ? n.courseId : '__none__';
+    } else {
+      key = '__kind_' + nk;
+    }
     (groups[key] = groups[key] || []).push(n);
   });
   const groupKeys = Object.keys(groups).sort((a,b) => {
     if (a === '__none__') return 1;
     if (b === '__none__') return -1;
+    if (a.startsWith('__kind_') && b.startsWith('__kind_')) return a.localeCompare(b);
+    if (a.startsWith('__kind_')) return 1;
+    if (b.startsWith('__kind_')) return -1;
     const ca = data.courses.find(c=>c.id===a)?.name || '';
     const cb = data.courses.find(c=>c.id===b)?.name || '';
     return ca.localeCompare(cb);
@@ -2176,7 +2847,9 @@ tabs.notes = () => {
   const rail = filtered.length === 0
     ? `<div class="muted" style="padding:24px; font-size:13px; text-align:center;">${data.notes.length === 0 ? 'No notes yet. Click + New note.' : 'No notes match your filter.'}</div>`
     : groupKeys.map(k => {
-        const courseName = k === '__none__' ? 'No course' : (data.courses.find(c=>c.id===k)?.name || 'No course');
+        const courseName = k.startsWith('__kind_')
+          ? (NOTE_KIND_LABEL[k.replace('__kind_','')] || k)
+          : (k === '__none__' ? 'No course' : (data.courses.find(c=>c.id===k)?.name || 'No course'));
         return `
           <div class="notes-group-head"><span>${escapeHtml(courseName)}</span><span class="count">${groups[k].length}</span></div>
           ${groups[k].map(n => {
@@ -2198,7 +2871,11 @@ tabs.notes = () => {
     </div>
     <div class="toolbar">
       <div class="search-wrap"><input id="note-search" placeholder="Search notes…" value="${escapeHtml(window._noteQuery||'')}"/></div>
-      <select class="filter" id="note-course-filter">
+      <select class="filter" id="note-kind-filter" title="Note category">
+        <option value="all" ${kindFilter==='all'?'selected':''}>All categories</option>
+        ${NOTE_KINDS.map(k=>`<option value="${k}" ${kindFilter===k?'selected':''}>${NOTE_KIND_LABEL[k]}</option>`).join('')}
+      </select>
+      <select class="filter" id="note-course-filter" ${kindFilter!=='all' && kindFilter!=='courses'?'disabled':''}>
         <option value="all" ${courseFilter==='all'?'selected':''}>All courses</option>
         ${data.courses.map(c=>`<option value="${c.id}" ${courseFilter===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}
         <option value="__no_course__" ${courseFilter==='__no_course__'?'selected':''}>(No course)</option>
@@ -2212,7 +2889,12 @@ tabs.notes = () => {
           <input id="note-title" class="notes-doc-title" value="${escapeHtml(active.title||'')}" placeholder="Untitled note" oninput="noteUpdate('${active.id}', 'title', this.value); flagSaving();"/>
           <div class="notes-doc-meta">
             <div class="meta-cell">
-              <select id="note-course-sel" onchange="noteUpdate('${active.id}', 'courseId', this.value); flagSaving();">
+              <select id="note-kind-sel" onchange="noteUpdate('${active.id}', 'kind', this.value); flagSaving(); render();" title="Category">
+                ${NOTE_KINDS.map(k=>`<option value="${k}" ${(active.kind||'courses')===k?'selected':''}>${NOTE_KIND_LABEL[k]}</option>`).join('')}
+              </select>
+            </div>
+            <div class="meta-cell">
+              <select id="note-course-sel" onchange="noteUpdate('${active.id}', 'courseId', this.value); flagSaving();" ${(active.kind||'courses')!=='courses'?'disabled':''}>
                 <option value="">No course</option>
                 ${data.courses.map(c=>`<option value="${c.id}" ${active.courseId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}
               </select>
@@ -2257,7 +2939,9 @@ function flagSaving() {
 
 tabs.notesInit = () => {
   const s = document.getElementById('note-search');
-  if (s) s.addEventListener('input', () => { window._noteQuery = s.value; render(); });
+  if (s) bindDebouncedInput('note-search', '_noteQuery', 160);
+  const k = document.getElementById('note-kind-filter');
+  if (k) k.addEventListener('change', () => { window._noteKind = k.value; render(); });
   const c = document.getElementById('note-course-filter');
   if (c) c.addEventListener('change', () => { window._noteCourse = c.value; render(); });
 
@@ -2305,7 +2989,8 @@ tabs.notesInit = () => {
 };
 
 function noteAdd() {
-  const n = { id: uid(), title:'', body:'', date: todayISO(), courseId:'', tags:'' };
+  const nk = window._noteKind && window._noteKind !== 'all' ? window._noteKind : 'courses';
+  const n = { id: uid(), title:'', body:'', date: todayISO(), courseId:'', kind: nk, tags:'' };
   data.notes.unshift(n);
   window._activeNote = n.id;
   saveData(); render();
@@ -2338,6 +3023,8 @@ function builtinFeeds() {
     { id: '__followups__',  name: 'Contact follow-ups',     color: '#b5893a', source: 'Follow-ups',  builtin: true },
     { id: '__activities__', name: 'Activity deadlines',     color: '#7c3aed', source: 'Activities', builtin: true },
     { id: '__health__',     name: 'Refills & doctor visits',color: '#dc2626', source: 'Health',     builtin: true },
+    { id: '__travel__',     name: 'Travel & flights',       color: '#0ea5e9', source: 'Travel',     builtin: true },
+    { id: '__journal__',    name: 'Journal entries',        color: '#64748b', source: 'Journal',    builtin: true },
   ];
 }
 
@@ -2363,6 +3050,252 @@ function setAllFeedsVisible(on) {
   builtinFeeds().forEach(f => window._feedVis[f.id] = on);
   (data.calendarFeeds||[]).forEach(f => window._feedVis[f.id] = on);
   render();
+}
+
+function builtinFeedCount(f) {
+  if (!f.builtin) return 0;
+  if (f.id === '__tasks__') return data.tasks.filter(t => t.due).length;
+  if (f.id === '__activities__') return (data.activities || []).filter(a => a.nextActionDate).length;
+  if (f.id === '__health__') {
+    return (data.health?.medications || []).filter(m => m.refillDate).length
+      + (data.health?.appointments || []).filter(a => a.date || a.reminderDate).length;
+  }
+  if (f.id === '__travel__') return (data.trips || []).filter(t => t.startDate && t.status !== 'Cancelled').length;
+  if (f.id === '__journal__') return (data.journal || []).length;
+  if (f.id === '__followups__') {
+    return data.contacts.reduce((n, c) => n + (nextFollowUp(c) ? 1 : 0)
+      + (c.interactions || []).filter(i => i.followUpDate).length, 0);
+  }
+  return 0;
+}
+
+function addDaysYMD(isoDate, deltaDays) {
+  if (!isoDate || !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return isoDate;
+  const [y, m, d] = isoDate.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + deltaDays);
+  return dt.toISOString().slice(0, 10);
+}
+
+function generatePackingList(destination, purpose, tripKind) {
+  const dest = (destination || '').toLowerCase();
+  const pur = (purpose || '').toLowerCase();
+
+  const items = [];
+  // essentials
+  items.push(
+    'Wallet + cards + cash',
+    'Passport / ID',
+    'Phone + charger',
+    'Laptop + charger (if needed)',
+    'Headphones',
+    'Keys',
+    'Any daily medications + prescriptions',
+    'Sunglasses'
+  );
+  // toiletries
+  items.push(
+    'Toothbrush + toothpaste',
+    'Deodorant',
+    'Skincare / moisturizer',
+    'Razor / grooming kit',
+    'Contacts / glasses + solution',
+    'Hand sanitizer',
+    'Band-aids / pain reliever'
+  );
+  // clothes
+  items.push(
+    'Underwear + socks',
+    'Everyday outfit(s)',
+    'Sleepwear',
+    'Comfortable walking shoes'
+  );
+
+  if (tripKind === 'school') {
+    items.push(
+      'Notebook or tablet',
+      'Pen',
+      'Business-casual outfit',
+      'Blazer / layer for AC rooms'
+    );
+  }
+
+  if (/interview|recruit|career|coffee|network/i.test(pur)) {
+    items.push(
+      'Resume copies',
+      'Portfolio / case notes',
+      'Professional shoes',
+      'Backup shirt / tie / blouse',
+      'Lint roller',
+      'Business cards'
+    );
+  }
+
+  if (/conference|summit|speaker/i.test(pur)) {
+    items.push('Badge lanyard', 'Notebook for notes', 'Portable charger');
+  }
+
+  if (/beach|tropical|miami|honolulu|caribbean/i.test(dest)) {
+    items.push('Swimwear', 'Sunscreen', 'Sandals', 'Hat');
+  }
+
+  if (/ski|cold|toronto|chicago|boston|denver|aspen|winter/i.test(dest)) {
+    items.push('Warm coat', 'Layers', 'Gloves / hat', 'Scarf');
+  }
+
+  if (/rain|seattle|london/i.test(dest)) {
+    items.push('Light rain jacket', 'Compact umbrella');
+  }
+
+  if (/europe|international|abroad|london|paris|tokyo|dubai|singapore/i.test(dest) || /international/i.test(pur)) {
+    items.push('Travel adapter', 'Notify bank / no-FTF card', 'Backup copy of passport');
+  }
+
+  if (/wedding|gala|formal/i.test(pur)) items.push('Formal outfit', 'Accessories');
+
+  // de-dup while preserving order
+  const seen = new Set();
+  return items.filter(x => {
+    const k = String(x).trim().toLowerCase();
+    if (!k || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+
+function packingItemsFromTrip(trip) {
+  if (Array.isArray(trip.packingItems) && trip.packingItems.length) return trip.packingItems;
+  const fallback = (trip.packingList || '').split(/\r?\n/).map(x => String(x).trim()).filter(Boolean);
+  if (fallback.length) {
+    trip.packingItems = fallback.map(x => ({ text: x.replace(/^\d+\.\s+/, ''), done: false }));
+    return trip.packingItems;
+  }
+  const base = generatePackingList(trip.destination, trip.purpose, trip.tripKind);
+  trip.packingItems = base.map(t => ({ text: t, done: false }));
+  return trip.packingItems;
+}
+
+function packingItemsToTaskNotes(trip) {
+  const items = packingItemsFromTrip(trip);
+  const lines = items.map(i => `- [${i.done ? 'x' : ' '}] ${i.text}`);
+  return lines.join('\n');
+}
+
+function syncTripBudgetEntry(trip) {
+  const amt = Number(trip.budgetAmount || 0);
+  const existingId = trip.budgetEntryId;
+  if (trip.status !== 'Confirmed' || !trip.startDate || !amt || amt <= 0) {
+    if (existingId) {
+      data.budget = data.budget.filter(b => b.id !== existingId);
+      trip.budgetEntryId = '';
+    }
+    return;
+  }
+  const note = `Planned travel: ${trip.title || trip.destination || 'Trip'}`;
+  const row = {
+    id: existingId || uid(),
+    date: trip.startDate,
+    type: 'Expense',
+    category: 'Travel',
+    amount: amt,
+    note,
+    tripId: trip.id,
+    plannedFromTrip: true
+  };
+  if (!existingId) {
+    trip.budgetEntryId = row.id;
+    data.budget.push(row);
+  } else {
+    const b = data.budget.find(x => x.id === existingId);
+    if (b) Object.assign(b, row);
+    else {
+      trip.budgetEntryId = row.id;
+      data.budget.push(row);
+    }
+  }
+}
+
+function ensureTripPackingTask(trip) {
+  const existingId = trip.packingTaskId;
+  if (!trip.startDate || trip.status === 'Cancelled' || trip.status === 'Idea') {
+    if (existingId) {
+      data.tasks = data.tasks.filter(t => t.id !== existingId);
+      trip.packingTaskId = '';
+    }
+    return;
+  }
+  const items = packingItemsFromTrip(trip);
+  // also keep a human-friendly string for older views/export
+  trip.packingList = items.map((x, i) => `${i + 1}. ${x.text}`).join('\n');
+  const due = addDaysYMD(trip.startDate, -2);
+  const title = `Pack for ${trip.destination || trip.title || 'trip'}`;
+  const payload = {
+    title,
+    category: 'Travel',
+    due,
+    status: 'To Do',
+    priority: 'High',
+    notes: packingItemsToTaskNotes(trip),
+    tripPackForId: trip.id
+  };
+  let t = existingId ? data.tasks.find(x => x.id === existingId) : null;
+  if (!t) {
+    t = { id: uid(), ...payload };
+    trip.packingTaskId = t.id;
+    data.tasks.push(t);
+  } else {
+    Object.assign(t, payload);
+  }
+}
+
+function tripTogglePackItem(tripId, idx) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  const items = packingItemsFromTrip(trip);
+  const it = items[idx];
+  if (!it) return;
+  it.done = !it.done;
+  saveTripInner(trip);
+  saveData(); render();
+}
+
+function tripAddPackItem(tripId, text) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  const t = String(text || '').trim();
+  if (!t) return;
+  const items = packingItemsFromTrip(trip);
+  items.push({ text: t, done: false });
+  saveTripInner(trip);
+  saveData(); render(); toast('Added');
+}
+
+function tripRegeneratePacking(tripId) {
+  const trip = data.trips.find(x => x.id === tripId);
+  if (!trip) return;
+  const base = generatePackingList(trip.destination, trip.purpose, trip.tripKind);
+  trip.packingItems = base.map(t => ({ text: t, done: false }));
+  saveTripInner(trip);
+  saveData(); render(); toast('Regenerated');
+}
+
+function saveTripInner(trip) {
+  syncTripBudgetEntry(trip);
+  ensureTripPackingTask(trip);
+}
+
+function datetimeLocalToDisplay(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  return isNaN(d) ? s : d.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function isoToDatetimeLocalValue(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function parseICS(text) {
@@ -2578,6 +3511,65 @@ function aggregateEvents(windowStart, windowEnd) {
         source: 'health-workout', workoutId: w.id
       });
     });
+
+    // cycle / period days
+    (data.health?.cycle?.periods || []).forEach(p => {
+      if (!p.start) return;
+      const d = eventDate(p.start);
+      if (!d || d < windowStart || d > windowEnd) return;
+      out.push({
+        id: 'period_' + p.id, feedId: '__health__', feedName: 'Health',
+        color: '#dc2626',
+        title: '🩸 Period' + (p.flow ? ` (${p.flow})` : ''),
+        start: p.start, end: p.start, allDay: true,
+        description: (p.symptoms ? `Symptoms: ${p.symptoms}` : '') + (p.notes ? `\n\n${p.notes}` : ''),
+        source: 'health-period', periodId: p.id
+      });
+      if (p.end && p.end !== p.start) {
+        const endD = eventDate(p.end);
+        if (endD && endD >= windowStart && endD <= windowEnd) {
+          out.push({
+            id: 'periodend_' + p.id, feedId: '__health__', feedName: 'Health',
+            color: '#dc2626',
+            title: '🩸 Period ends',
+            start: p.end, end: p.end, allDay: true,
+            description: '',
+            source: 'health-period', periodId: p.id
+          });
+        }
+      }
+    });
+
+    // health events (migraine, etc.)
+    (data.health?.events || []).forEach(e => {
+      if (!e.date) return;
+      const d = eventDate(e.date);
+      if (!d || d < windowStart || d > windowEnd) return;
+      out.push({
+        id: 'healthevent_' + e.id, feedId: '__health__', feedName: 'Health',
+        color: '#dc2626',
+        title: '⚕️ ' + (e.type || 'Health event'),
+        start: e.date, end: e.date, allDay: true,
+        description: (e.severity ? `Severity: ${e.severity}` : '') + (e.triggers ? `\nTriggers: ${e.triggers}` : '') + (e.notes ? `\n\n${e.notes}` : ''),
+        source: 'health-event', eventId: e.id
+      });
+    });
+
+    // progress measurements
+    (data.health?.measurements || []).forEach(m => {
+      if (!m.date) return;
+      const d = eventDate(m.date);
+      if (!d || d < windowStart || d > windowEnd) return;
+      const title = (m.weight!=null && m.weight!=='') ? `⚖️ Weigh-in: ${m.weight}` : '📈 Progress entry';
+      out.push({
+        id: 'measure_' + m.id, feedId: '__health__', feedName: 'Health',
+        color: '#dc2626',
+        title,
+        start: m.date, end: m.date, allDay: true,
+        description: (m.note ? m.note : '') + ((m.photos?.length || 0) ? `\n\n${m.photos.length} photo(s) attached` : ''),
+        source: 'health-measurement', measurementId: m.id
+      });
+    });
   }
 
   if (isFeedVisible('__followups__')) {
@@ -2609,11 +3601,152 @@ function aggregateEvents(windowStart, windowEnd) {
     });
   }
 
+  if (isFeedVisible('__travel__')) {
+    (data.trips || []).forEach(trip => {
+      if (trip.status === 'Cancelled') return;
+      const startIso = trip.startDate;
+      const endIso = trip.endDate || trip.startDate;
+      if (!startIso) return;
+      const s0 = eventDate(startIso);
+      const e0 = eventDate(endIso);
+      if (!s0 || !e0) return;
+      const cur = new Date(s0.getFullYear(), s0.getMonth(), s0.getDate());
+      const endLoop = new Date(e0.getFullYear(), e0.getMonth(), e0.getDate());
+      while (cur <= endLoop) {
+        const dayStr = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
+        const dayD = eventDate(dayStr);
+        if (dayD && dayD >= windowStart && dayD <= windowEnd) {
+          const tag = trip.tripKind === 'school' ? '🎓' : '✈️';
+          out.push({
+            id: 'tripday_' + trip.id + '_' + dayStr,
+            feedId: '__travel__', feedName: 'Travel',
+            color: '#0ea5e9',
+            title: `${tag} ${trip.title || trip.destination || 'Trip'}${trip.status && trip.status !== 'Confirmed' ? ' · ' + trip.status : ''}`,
+            start: dayStr, end: dayStr, allDay: true,
+            description: [trip.destination, trip.purpose, trip.notes].filter(Boolean).join('\n'),
+            source: 'trip', tripId: trip.id
+          });
+        }
+        cur.setDate(cur.getDate() + 1);
+      }
+      (trip.flights || []).forEach((fl, idx) => {
+        const dep = fl.departISO || fl.departure;
+        const arr = fl.arriveISO || fl.arrival;
+        const fid = fl.id || idx;
+        if (dep) {
+          const dt = new Date(dep);
+          if (!isNaN(dt.getTime()) && dt >= windowStart && dt <= windowEnd) {
+            out.push({
+              id: 'tripflt_dep_' + trip.id + '_' + fid,
+              feedId: '__travel__', feedName: 'Travel',
+              color: '#0284c7',
+              title: 'Flight dep' + (fl.from ? ': ' + fl.from : '') + (fl.to ? ' → ' + fl.to : '') + (fl.confirmationCode ? ' · #' + fl.confirmationCode : ''),
+              start: dt.toISOString(),
+              end: dt.toISOString(),
+              allDay: false,
+              location: fl.from || '',
+              description: [fl.airline, fl.notes].filter(Boolean).join('\n'),
+              source: 'trip-flight', tripId: trip.id, flightId: fid
+            });
+          }
+        }
+        if (arr) {
+          const dt = new Date(arr);
+          if (!isNaN(dt.getTime()) && dt >= windowStart && dt <= windowEnd) {
+            out.push({
+              id: 'tripflt_arr_' + trip.id + '_' + fid,
+              feedId: '__travel__', feedName: 'Travel',
+              color: '#0369a1',
+              title: 'Flight arr' + (fl.from ? ': ' + fl.from : '') + (fl.to ? ' → ' + fl.to : ''),
+              start: dt.toISOString(),
+              end: dt.toISOString(),
+              allDay: false,
+              location: fl.to || '',
+              description: [fl.confirmationCode ? 'Conf: ' + fl.confirmationCode : '', fl.airline, fl.notes].filter(Boolean).join('\n'),
+              source: 'trip-flight', tripId: trip.id, flightId: fid
+            });
+          }
+        }
+      });
+    });
+  }
+
+  if (isFeedVisible('__journal__')) {
+    (data.journal || []).forEach(j => {
+      if (!j.date) return;
+      const d = eventDate(j.date);
+      if (!d || d < windowStart || d > windowEnd) return;
+      const snippet = (typeof plainText === 'function' ? plainText(j.body || '') : (j.body || '').replace(/<[^>]+>/g, '')).slice(0, 220);
+      out.push({
+        id: 'journal_' + j.id,
+        feedId: '__journal__', feedName: 'Journal',
+        color: '#64748b',
+        title: '📔 ' + (j.title || 'Journal'),
+        start: j.date, end: j.date, allDay: true,
+        description: snippet + ((j.photos?.length) ? '\n[' + j.photos.length + ' photos]' : ''),
+        source: 'journal', journalId: j.id
+      });
+    });
+  }
+
   return out;
+}
+
+function calAnchorDate() {
+  const today = new Date();
+  if (window._calSelected) return new Date(window._calSelected + 'T12:00:00');
+  if (window._calCursor) return new Date(window._calCursor);
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
+function startOfWeekSunday(d) {
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  x.setDate(x.getDate() - x.getDay());
+  return x;
+}
+
+function sortCalendarEvents(arr) {
+  return arr.slice().sort((a, b) => {
+    const ao = a.allDay ? 0 : 1;
+    const bo = b.allDay ? 0 : 1;
+    if (ao !== bo) return ao - bo;
+    return (a.start || '').localeCompare(b.start || '');
+  });
+}
+
+function calendarEventTimelineHtml(evts) {
+  return evts.map(e => `
+                <div class="timeline-item" style="border-left-color:${e.color};">
+                  <div class="timeline-date" style="color:${e.color};">${e.allDay ? 'All day' : formatEventTime(e.start) + (e.end && e.end !== e.start ? ' – ' + formatEventTime(e.end) : '')} · ${escapeHtml(e.feedName)}</div>
+                  <div class="timeline-title">${escapeHtml(e.title)}</div>
+                  ${e.location ? `<div class="timeline-body">📍 ${escapeHtml(e.location)}</div>` : ''}
+                  ${e.description ? `<div class="timeline-body">${escapeHtml(String(e.description).slice(0, 400))}${String(e.description).length>400?'…':''}</div>` : ''}
+                  ${e.source==='task' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="switchTab('tasks');">Open in Tasks</button></div>` : ''}
+                  ${e.source==='followup' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="window._crmSub='detail'; window._crmDetailId='${e.contactId}'; switchTab('crm');">Open contact</button></div>` : ''}
+                  ${e.source==='journal' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="switchTab('journal'); window._journalPick='${e.journalId}'; render();">Open journal</button></div>` : ''}
+                  ${e.source==='trip' || e.source==='trip-flight' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="switchTab('travel'); window._travelPick='${e.tripId}'; render();">Open trip</button></div>` : ''}
+                </div>`).join('');
+}
+
+function calendarDayDetailCard(selected) {
+  const dayStart = new Date(selected + 'T00:00:00');
+  const dayEnd = new Date(selected + 'T23:59:59');
+  const selectedEvents = sortCalendarEvents(aggregateEvents(dayStart, dayEnd));
+  const title = eventDate(selected)?.toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'}) || 'Day';
+  return `
+        <div class="card" style="margin-top:18px;">
+          <h3>${title}</h3>
+          ${selectedEvents.length === 0
+            ? `<div class="muted" style="font-size:13px;">No events on this day.</div>`
+            : `<div class="timeline">${calendarEventTimelineHtml(selectedEvents)}</div>`
+          }
+        </div>`;
 }
 
 tabs.calendar = () => {
   const today = new Date();
+  const view = window._calViewMode || 'month';
+
   const cur = window._calCursor ? new Date(window._calCursor) : new Date(today.getFullYear(), today.getMonth(), 1);
   const year = cur.getFullYear();
   const month = cur.getMonth();
@@ -2635,7 +3768,6 @@ tabs.calendar = () => {
   });
 
   const selected = window._calSelected || `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-  const selectedEvents = (byDate[selected] || []).slice().sort((a,b) => (a.allDay ? 0:1) - (b.allDay ? 0:1) || (a.start || '').localeCompare(b.start || ''));
 
   const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   let cells = '';
@@ -2649,7 +3781,7 @@ tabs.calendar = () => {
     const dayEvents = (byDate[key] || []).slice(0, 3);
     const more = (byDate[key] || []).length - dayEvents.length;
     cells += `
-      <div class="cal-cell ${inMonth?'':'cal-cell-out'} ${isToday?'cal-cell-today':''} ${isSelected?'cal-cell-selected':''}" onclick="window._calSelected='${key}'; render();">
+      <div class="cal-cell ${inMonth?'':'cal-cell-out'} ${isToday?'cal-cell-today':''} ${isSelected?'cal-cell-selected':''}" onclick="window._calSelected='${key}'; window._calViewMode='month'; render();">
         <div class="cal-cell-num">${d.getDate()}</div>
         <div class="cal-cell-events">
           ${dayEvents.map(e => `<div class="cal-chip" style="background:${e.color}1a; color:${e.color}; border-color:${e.color}66;" title="${escapeHtml(e.title)}">${e.allDay?'':`<span style="opacity:.7; margin-right:4px;">${formatEventTime(e.start)}</span>`}${escapeHtml(e.title)}</div>`).join('')}
@@ -2658,18 +3790,54 @@ tabs.calendar = () => {
       </div>`;
   }
 
+  const ws = startOfWeekSunday(calAnchorDate());
+  const weekEnd = new Date(ws);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  const weekLabel = ws.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' – ' + weekEnd.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+
+  const wStart0 = new Date(ws.getFullYear(), ws.getMonth(), ws.getDate(), 0, 0, 0);
+  const wEnd0 = new Date(ws.getFullYear(), ws.getMonth(), ws.getDate() + 6, 23, 59, 59);
+  const wEvents = aggregateEvents(wStart0, wEnd0);
+  const byWeek = {};
+  wEvents.forEach(e => {
+    const d = eventDate(e.start);
+    if (!d) return;
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    (byWeek[key] = byWeek[key] || []).push(e);
+  });
+
+  let weekHtml = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(ws);
+    d.setDate(ws.getDate() + i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const isToday = d.toDateString() === today.toDateString();
+    const isSel = key === selected;
+    const evs = sortCalendarEvents(byWeek[key] || []);
+    weekHtml += `
+      <div class="cal-week-col ${isSel?'cal-week-col-selected':''}" onclick="window._calSelected='${key}'; render();">
+        <div class="cal-week-col-head ${isToday?'cal-week-today':''}">
+          <span class="cal-week-dow">${dayNames[d.getDay()]}</span>
+          <span class="cal-week-dom">${d.getDate()}</span>
+        </div>
+        <div class="cal-week-col-body">
+          ${evs.map(e => `<div class="cal-chip" style="background:${e.color}1a; color:${e.color}; border-color:${e.color}66;">${e.allDay?'':`<span style="opacity:.7; margin-right:4px;">${formatEventTime(e.start)}</span>`}${escapeHtml(e.title)}</div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  const dayTitle = eventDate(selected)?.toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'}) || 'Day';
+
+  let navLabel = monthLabel;
+  if (view === 'week') navLabel = weekLabel;
+  if (view === 'day') navLabel = dayTitle;
+
   const renderFeedRow = (f) => {
     const visible = isFeedVisible(f.id);
-    const count = f.events
-      ? (f.events?.length || 0)
+    const count = (f.events && f.events.length)
+      ? f.events.length
       : f.builtin
-        ? (f.id === '__tasks__'
-            ? data.tasks.filter(t=>t.due).length
-            : f.id === '__activities__'
-              ? (data.activities||[]).filter(a=>a.nextActionDate).length
-              : f.id === '__health__'
-                ? ((data.health?.medications||[]).filter(m=>m.refillDate).length + (data.health?.appointments||[]).filter(a=>a.date || a.reminderDate).length)
-                : data.contacts.reduce((n,c)=>n + (nextFollowUp(c)?1:0) + (c.interactions||[]).filter(i=>i.followUpDate).length, 0))
+        ? builtinFeedCount(f)
         : (f.events?.length || 0);
     const checkBg = visible ? f.color : 'transparent';
     return `
@@ -2714,14 +3882,31 @@ tabs.calendar = () => {
     `;
   });
 
+  const mainCal =
+    view === 'month'
+      ? `<div class="cal-grid">
+          ${dayNames.map(d=>`<div class="cal-dayhead">${d}</div>`).join('')}
+          ${cells}
+        </div>${calendarDayDetailCard(selected)}`
+    : view === 'week'
+      ? `<div class="cal-week-wrap">
+          <div class="cal-week-cols">${weekHtml}</div>
+        </div>${calendarDayDetailCard(selected)}`
+      : calendarDayDetailCard(selected);
+
   return `
     <div class="page-head">
       <div><h1 class="page-title">Calendar</h1><p class="page-sub">${(data.calendarFeeds||[]).length} imported feed${(data.calendarFeeds||[]).length===1?'':'s'} · ${data.tasks.filter(t=>t.due).length} task deadlines</p></div>
-      <div class="row">
-        <button class="btn" onclick="window._calCursor=new Date().toISOString(); window._calSelected=null; render();">Today</button>
-        <button class="btn" onclick="moveMonth(-1)">‹</button>
-        <div style="font-weight:600; min-width:140px; text-align:center;">${monthLabel}</div>
-        <button class="btn" onclick="moveMonth(1)">›</button>
+      <div class="row" style="flex-wrap:wrap;">
+        <div class="subnav" style="margin:0;">
+          <button type="button" class="${view==='month'?'active':''}" onclick="window._calViewMode='month'; render();">Month</button>
+          <button type="button" class="${view==='week'?'active':''}" onclick="window._calViewMode='week'; render();">Week</button>
+          <button type="button" class="${view==='day'?'active':''}" onclick="window._calViewMode='day'; render();">Day</button>
+        </div>
+        <button class="btn" onclick="calGoToday()">Today</button>
+        <button class="btn" onclick="calNavPrev()">‹</button>
+        <div style="font-weight:600; min-width:160px; text-align:center;">${escapeHtml(navLabel)}</div>
+        <button class="btn" onclick="calNavNext()">›</button>
         <button class="btn btn-primary" onclick="openImportCalendar()"><span class="plus">+</span> Import calendar</button>
       </div>
     </div>
@@ -2736,26 +3921,7 @@ tabs.calendar = () => {
       </aside>
 
       <div>
-        <div class="cal-grid">
-          ${dayNames.map(d=>`<div class="cal-dayhead">${d}</div>`).join('')}
-          ${cells}
-        </div>
-
-        <div class="card" style="margin-top:18px;">
-          <h3>${eventDate(selected)?.toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'}) || 'Selected day'}</h3>
-          ${selectedEvents.length === 0
-            ? `<div class="muted" style="font-size:13px;">No events on this day.</div>`
-            : `<div class="timeline">${selectedEvents.map(e => `
-                <div class="timeline-item" style="border-left-color:${e.color};">
-                  <div class="timeline-date" style="color:${e.color};">${e.allDay ? 'All day' : formatEventTime(e.start) + (e.end && e.end !== e.start ? ' – ' + formatEventTime(e.end) : '')} · ${escapeHtml(e.feedName)}</div>
-                  <div class="timeline-title">${escapeHtml(e.title)}</div>
-                  ${e.location ? `<div class="timeline-body">📍 ${escapeHtml(e.location)}</div>` : ''}
-                  ${e.description ? `<div class="timeline-body">${escapeHtml(String(e.description).slice(0, 400))}${String(e.description).length>400?'…':''}</div>` : ''}
-                  ${e.source==='task' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="window._calSelected=null; switchTab('tasks');">Open in Tasks</button></div>` : ''}
-                  ${e.source==='followup' ? `<div style="margin-top:6px;"><button class="btn btn-sm" onclick="window._crmSub='detail'; window._crmDetailId='${e.contactId}'; switchTab('crm');">Open contact</button></div>` : ''}
-                </div>`).join('')}</div>`
-          }
-        </div>
+        ${mainCal}
       </div>
     </div>
   `;
@@ -2765,6 +3931,32 @@ function moveMonth(delta) {
   const cur = window._calCursor ? new Date(window._calCursor) : new Date();
   cur.setMonth(cur.getMonth() + delta, 1);
   window._calCursor = cur.toISOString();
+  render();
+}
+function calGoToday() {
+  const t = new Date();
+  window._calSelected = t.toISOString().slice(0, 10);
+  window._calCursor = t.toISOString();
+  render();
+}
+function calNavPrev() {
+  const mode = window._calViewMode || 'month';
+  if (mode === 'month') { moveMonth(-1); return; }
+  const ad = calAnchorDate();
+  if (mode === 'week') ad.setDate(ad.getDate() - 7);
+  else ad.setDate(ad.getDate() - 1);
+  window._calCursor = ad.toISOString();
+  window._calSelected = ad.toISOString().slice(0, 10);
+  render();
+}
+function calNavNext() {
+  const mode = window._calViewMode || 'month';
+  if (mode === 'month') { moveMonth(1); return; }
+  const ad = calAnchorDate();
+  if (mode === 'week') ad.setDate(ad.getDate() + 7);
+  else ad.setDate(ad.getDate() + 1);
+  window._calCursor = ad.toISOString();
+  window._calSelected = ad.toISOString().slice(0, 10);
   render();
 }
 function formatEventTime(iso) {
@@ -2832,7 +4024,7 @@ function removeCalendarFeed(id) {
    ============================================================ */
 const taskFields = [
   { key:'title', label:'Task *', placeholder:'e.g. Submit case analysis', required:true, full:true },
-  { key:'category', label:'Category', type:'select', options:['Class','Recruiting','Personal','Networking','Admin','Other'] },
+  { key:'category', label:'Category', type:'select', options:['Class','Recruiting','Personal','Networking','Travel','Admin','Other'] },
   { key:'due', label:'Due date', type:'date' },
   { key:'priority', label:'Priority', type:'select', options:['Low','Medium','High','Critical'] },
   { key:'status', label:'Status', type:'select', options:['To Do','In Progress','Waiting','Done'] },
@@ -2905,6 +4097,7 @@ const readFields = [
   { key:'type', label:'Type', type:'select', options:['Case','Article','Book','Paper','HBR','Other'] },
   { key:'status', label:'Status', type:'select', options:['Queued','Reading','Read','Skimmed','Skip'] },
   { key:'course', label:'Related course' },
+  { key:'recommendedByContactId', label:'Who recommended', type:'select', options: () => [{ value:'', label:'—' }].concat((data.contacts||[]).map(c => ({ value: c.id, label: fullName(c) }))) },
   { key:'dueDate', label:'Due date', type:'date' },
   { key:'rating', label:'Rating (1-5)' },
   { key:'summary', label:'Summary / Takeaways', type:'textarea', rows:6, full:true },
@@ -2925,12 +4118,17 @@ tabs.reading = () => {
     <div class="tbl-wrap">
       ${filtered.length ? `
       <table class="tbl">
-        <thead><tr><th>Title</th><th>Type</th><th>Course</th><th>Due</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Title</th><th>Type</th><th>Course</th><th>Who recommended</th><th>Due</th><th>Status</th><th></th></tr></thead>
         <tbody>
         ${filtered.map(r => `<tr>
           <td><div style="font-weight:600;">${escapeHtml(r.title)}</div><div style="font-size:12px; color:var(--text-muted);">${escapeHtml(r.author||'')}</div>${r.summary?`<div style="font-size:13px; color:var(--text-muted); margin-top:4px; white-space:pre-wrap;">${escapeHtml(r.summary)}</div>`:''}</td>
           <td><span class="badge badge-brand">${escapeHtml(r.type||'—')}</span></td>
           <td>${escapeHtml(r.course||'—')}</td>
+          <td>${r.recommendedByContactId ? (() => {
+            const c = (data.contacts||[]).find(x => x.id === r.recommendedByContactId);
+            const name = c ? fullName(c) : 'Unknown contact';
+            return `<a onclick="window._crmSub='detail'; window._crmDetailId='${escapeHtml(r.recommendedByContactId)}'; switchTab('crm');" style="cursor:pointer;">${escapeHtml(name)}</a>`;
+          })() : '—'}</td>
           <td>${fmtDate(r.dueDate)}</td>
           <td>${escapeHtml(r.status||'Queued')}</td>
           <td style="text-align:right; white-space:nowrap;"><button class="btn btn-sm" onclick="readEdit('${r.id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="readDel('${r.id}')">×</button></td>
@@ -3124,11 +4322,15 @@ function renderActivityCard(a) {
 }
 
 tabs.activitiesInit = () => {
-  const bind = (id, key, ev) => { const el = document.getElementById(id); if (!el) return; el.addEventListener(ev, () => { window[key] = el.value; render(); }); };
-  bind('act-search', '_actQuery', 'input');
-  bind('act-cat', '_actCat', 'change');
-  bind('act-status', '_actStatus', 'change');
-  bind('act-sort', '_actSort', 'change');
+  bindDebouncedInput('act-search', '_actQuery', 160);
+  const bind = (id, key) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('change', () => { window[key] = el.value; render(); });
+  };
+  bind('act-cat', '_actCat');
+  bind('act-status', '_actStatus');
+  bind('act-sort', '_actSort');
 };
 
 function activityAdd(prefill) {
@@ -3229,13 +4431,38 @@ const workoutFields = [
   { key:'notes',       label:'Notes', type:'textarea', rows:3, full:true, placeholder:'sets/reps, pace, how it felt, PRs, soreness, etc.' },
 ];
 
+const periodFields = [
+  { key:'start',    label:'Start *', type:'date', required:true, default: todayISO() },
+  { key:'end',      label:'End', type:'date' },
+  { key:'flow',     label:'Flow', type:'select', options:['Light','Medium','Heavy','Spotting'] },
+  { key:'symptoms', label:'Symptoms', placeholder:'e.g. cramps, fatigue, mood, headache', full:true },
+  { key:'notes',    label:'Notes', type:'textarea', rows:3, full:true, placeholder:'anything to remember' },
+];
+
+const healthEventFields = [
+  { key:'date',     label:'Date *', type:'date', required:true, default: todayISO() },
+  { key:'type',     label:'Event *', required:true, full:true, placeholder:'e.g. Migraine, nausea, cramps, fever' },
+  { key:'severity', label:'Severity', type:'select', options:['Mild','Moderate','Severe'] },
+  { key:'triggers', label:'Triggers', placeholder:'e.g. sleep, stress, dehydration, food', full:true },
+  { key:'notes',    label:'Notes', type:'textarea', rows:3, full:true, placeholder:'meds taken, duration, what helped' },
+];
+
+const measurementFields = [
+  { key:'date',   label:'Date *', type:'date', required:true, default: todayISO() },
+  { key:'weight', label:'Weight', type:'number', step:'0.1', placeholder:'e.g. 135.2' },
+  { key:'note',   label:'Note', type:'textarea', rows:2, full:true, placeholder:'context: cycle day, travel, training load, etc.' },
+];
+
 tabs.health = () => {
   const sub = window._healthSub || 'today';
-  const subnav = ['today','workouts','meds','appointments','history']
-    .map(s => `<button class="${s===sub?'active':''}" onclick="window._healthSub='${s}'; render();">${({today:'Today',workouts:'Workouts',meds:'Medications',appointments:'Doctor visits',history:'History'})[s]}</button>`).join('');
+  const subnav = ['today','cycle','events','progress','workouts','meds','appointments','history']
+    .map(s => `<button class="${s===sub?'active':''}" onclick="window._healthSub='${s}'; render();">${({today:'Today',cycle:'Cycle',events:'Events',progress:'Progress',workouts:'Workouts',meds:'Medications',appointments:'Doctor visits',history:'History'})[s]}</button>`).join('');
 
   let body = '';
   if (sub === 'today') body = healthToday();
+  else if (sub === 'cycle') body = healthCycle();
+  else if (sub === 'events') body = healthEvents();
+  else if (sub === 'progress') body = healthProgress();
   else if (sub === 'workouts') body = healthWorkouts();
   else if (sub === 'meds') body = healthMeds();
   else if (sub === 'appointments') body = healthAppts();
@@ -3248,6 +4475,9 @@ tabs.health = () => {
         <p class="page-sub">Daily check-ins, medications, and doctor follow-ups — kept private and local.</p>
       </div>
       <div class="row">
+        <button class="btn" onclick="periodAdd()">+ Period</button>
+        <button class="btn" onclick="healthEventAdd()">+ Event</button>
+        <button class="btn" onclick="measurementAdd()">+ Progress</button>
         <button class="btn" onclick="workoutAdd()">+ Workout</button>
         <button class="btn" onclick="medAdd()">+ Medication</button>
         <button class="btn" onclick="apptAdd()">+ Appointment</button>
@@ -3293,6 +4523,126 @@ function healthWorkouts() {
     </div>
   `;
 }
+
+function healthCycle() {
+  const periods = (data.health.cycle?.periods || []).slice().sort((a,b)=> (b.start||'').localeCompare(a.start||''));
+  const current = periods.find(p => p.start && (!p.end || p.end >= todayISO()) && p.start <= todayISO());
+  return `
+    <div class="card" style="margin-bottom:14px;">
+      <h3>Period days</h3>
+      <div class="muted" style="font-size:13px;">
+        Track period start/end days (and notes). ${current ? `<span class="badge badge-danger" style="margin-left:8px;">On period</span>` : `<span class="badge" style="margin-left:8px;">Not currently</span>`}
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-sm btn-primary" onclick="periodAdd()"><span class="plus">+</span> Add period</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      ${periods.length ? `<table class="tbl">
+        <thead><tr><th>Start</th><th>End</th><th>Flow</th><th>Symptoms</th><th>Notes</th><th></th></tr></thead>
+        <tbody>${periods.map(p => `<tr>
+          <td>${fmtDate(p.start)}</td>
+          <td>${p.end ? fmtDate(p.end) : '—'}</td>
+          <td>${p.flow ? `<span class="badge badge-warn">${escapeHtml(p.flow)}</span>` : '—'}</td>
+          <td>${escapeHtml(p.symptoms||'—')}</td>
+          <td><div style="font-size:13px; color:var(--text-muted); white-space:pre-wrap;">${escapeHtml((p.notes||'').slice(0,160))}${(p.notes||'').length>160?'…':''}</div></td>
+          <td style="text-align:right; white-space:nowrap;"><button class="btn btn-sm" onclick="periodEdit('${p.id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="periodDel('${p.id}')">×</button></td>
+        </tr>`).join('')}</tbody>
+      </table>` : `<div class="empty-state"><h4>No periods logged</h4><p>Add the first period start/end to begin tracking.</p></div>`}
+    </div>
+  `;
+}
+
+function healthEvents() {
+  const events = (data.health.events || []).slice().sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  const last14 = events.filter(e => e.date && e.date >= new Date(Date.now() - 14*86400000).toISOString().slice(0,10));
+  const top = Object.entries(last14.reduce((m,e)=> (m[(e.type||'Other')] = (m[(e.type||'Other')]||0)+1, m), {})).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+  return `
+    <div class="grid grid-3" style="margin-bottom:14px;">
+      <div class="card stat"><span class="stat-label">Events (14d)</span><span class="stat-value">${last14.length}</span><span class="stat-help">most common: ${escapeHtml(top)}</span></div>
+      <div class="card stat"><span class="stat-label">Events (all time)</span><span class="stat-value">${events.length}</span><span class="stat-help">migraines, cramps, etc.</span></div>
+      <div class="card stat"><span class="stat-label">Log now</span><span class="stat-value">+</span><span class="stat-help"><button class="btn btn-sm" onclick="healthEventAdd()">Add event</button></span></div>
+    </div>
+
+    <div class="tbl-wrap">
+      ${events.length ? `<table class="tbl">
+        <thead><tr><th>Date</th><th>Event</th><th>Severity</th><th>Triggers</th><th>Notes</th><th></th></tr></thead>
+        <tbody>${events.map(e => `<tr>
+          <td>${fmtDate(e.date)}</td>
+          <td><div style="font-weight:600;">${escapeHtml(e.type||'—')}</div></td>
+          <td>${e.severity ? `<span class="badge ${e.severity==='Severe'?'badge-danger':e.severity==='Moderate'?'badge-warn':'badge-ok'}">${escapeHtml(e.severity)}</span>` : '—'}</td>
+          <td>${escapeHtml(e.triggers||'—')}</td>
+          <td><div style="font-size:13px; color:var(--text-muted); white-space:pre-wrap;">${escapeHtml((e.notes||'').slice(0,160))}${(e.notes||'').length>160?'…':''}</div></td>
+          <td style="text-align:right; white-space:nowrap;"><button class="btn btn-sm" onclick="healthEventEdit('${e.id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="healthEventDel('${e.id}')">×</button></td>
+        </tr>`).join('')}</tbody>
+      </table>` : `<div class="empty-state"><h4>No health events yet</h4><p>Track migraines, cramps, flare-ups, anything notable.</p></div>`}
+    </div>
+  `;
+}
+
+function healthProgress() {
+  const range = window._healthRange || '90';
+  const days = Number(range);
+  const cutoff = new Date(Date.now() - days*86400000).toISOString().slice(0,10);
+  const inRange = (data.health.measurements || []).slice().filter(m => !m.date || m.date >= cutoff).sort((a,b)=> (a.date||'').localeCompare(b.date||''));
+  const firstW = inRange.find(m=>m.weight!=null && m.weight!=='')?.weight;
+  const lastW = [...inRange].reverse().find(m=>m.weight!=null && m.weight!=='')?.weight;
+  const delta = (firstW!=null && lastW!=null) ? (Number(lastW) - Number(firstW)) : null;
+  const photos = (data.health.measurements||[]).flatMap(m => (m.photos||[]).map(p => ({...p, date:m.date}))).slice(-12).reverse();
+
+  return `
+    <div class="page-head" style="margin-bottom:14px;">
+      <div>
+        <h1 class="page-title">Progress</h1>
+        <p class="page-sub">Track weight and optional photos — stays private and local.</p>
+      </div>
+      <div class="row">
+        <select class="filter" id="health-range">
+          ${['30','90','180','365'].map(v => `<option value="${v}" ${String(range)===String(v)?'selected':''}>Last ${v} days</option>`).join('')}
+        </select>
+        <button class="btn btn-primary" onclick="measurementAdd()"><span class="plus">+</span> Add entry</button>
+      </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-bottom:14px;">
+      <div class="card stat"><span class="stat-label">Entries</span><span class="stat-value">${inRange.length}</span><span class="stat-help">in selected range</span></div>
+      <div class="card stat"><span class="stat-label">Weight change</span><span class="stat-value">${delta==null?'—':(delta>0?'+':'')+delta.toFixed(1)}</span><span class="stat-help">${firstW!=null&&lastW!=null?`${firstW} → ${lastW}`:'add weights to compute'}</span></div>
+      <div class="card stat"><span class="stat-label">Photos</span><span class="stat-value">${(data.health.measurements||[]).reduce((n,m)=>n+(m.photos?.length||0),0)}</span><span class="stat-help">stored locally</span></div>
+    </div>
+
+    ${photos.length ? `<div class="card" style="margin-bottom:14px;">
+      <h3>Recent photos</h3>
+      <div style="display:grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap:10px;">
+        ${photos.map(p => `<div style="border:1px solid var(--border); border-radius:10px; overflow:hidden; background:#fff;">
+          <div style="aspect-ratio:1/1; background:#fff; display:grid; place-items:center; overflow:hidden;">
+            <img src="${p.dataUrl}" alt="${escapeHtml(p.name||'photo')}" style="width:100%; height:100%; object-fit:cover;"/>
+          </div>
+          <div style="padding:8px 10px; font-size:11px; color:var(--text-muted);">${p.date?escapeHtml(p.date):''}</div>
+        </div>`).join('')}
+      </div>
+      <div class="muted" style="font-size:11px; margin-top:10px;">Tip: photos can use up storage. Export JSON periodically.</div>
+    </div>` : ''}
+
+    <div class="tbl-wrap">
+      ${(data.health.measurements||[]).length ? `<table class="tbl">
+        <thead><tr><th>Date</th><th>Weight</th><th>Note</th><th>Photos</th><th></th></tr></thead>
+        <tbody>${(data.health.measurements||[]).slice().sort((a,b)=> (b.date||'').localeCompare(a.date||'')).map(m => `<tr>
+          <td>${fmtDate(m.date)}</td>
+          <td>${m.weight===''||m.weight==null?'—':escapeHtml(String(m.weight))}</td>
+          <td><div style="font-size:13px; color:var(--text-muted); white-space:pre-wrap;">${escapeHtml((m.note||'').slice(0,160))}${(m.note||'').length>160?'…':''}</div></td>
+          <td>${(m.photos||[]).length ? `<span class="badge badge-brand">${m.photos.length} photo${m.photos.length===1?'':'s'}</span>` : '—'}</td>
+          <td style="text-align:right; white-space:nowrap;"><button class="btn btn-sm" onclick="measurementEdit('${m.id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="measurementDel('${m.id}')">×</button></td>
+        </tr>`).join('')}</tbody>
+      </table>` : `<div class="empty-state"><h4>No progress entries</h4><p>Add weight entries and optional photos.</p></div>`}
+    </div>
+  `;
+}
+
+tabs.healthInit = () => {
+  const r = document.getElementById('health-range');
+  if (r) r.addEventListener('change', () => { window._healthRange = r.value; render(); });
+};
 
 function healthToday() {
   const k = todayISO();
@@ -3559,6 +4909,152 @@ function workoutEdit(id) {
 function workoutDel(id) {
   if (!confirm('Delete this workout?')) return;
   data.health.workouts = (data.health.workouts || []).filter(x => x.id !== id);
+  saveData(); render(); toast('Deleted');
+}
+
+function periodAdd() {
+  data.health.cycle = data.health.cycle || { periods: [] };
+  openGenericModal('Add period', periodFields, (v) => {
+    v.id = uid();
+    data.health.cycle.periods.push(v);
+    saveData(); render(); toast('Saved');
+  }, { start: todayISO(), flow: 'Medium' });
+}
+function periodEdit(id) {
+  data.health.cycle = data.health.cycle || { periods: [] };
+  const p = (data.health.cycle.periods || []).find(x => x.id === id);
+  if (!p) return;
+  openGenericModal('Edit period', periodFields, (v) => {
+    Object.assign(p, v);
+    saveData(); render(); toast('Saved');
+  }, p);
+}
+function periodDel(id) {
+  if (!confirm('Delete this period entry?')) return;
+  data.health.cycle = data.health.cycle || { periods: [] };
+  data.health.cycle.periods = (data.health.cycle.periods || []).filter(x => x.id !== id);
+  saveData(); render(); toast('Deleted');
+}
+
+function healthEventAdd() {
+  data.health.events = data.health.events || [];
+  openGenericModal('Add health event', healthEventFields, (v) => {
+    v.id = uid();
+    data.health.events.push(v);
+    saveData(); render(); toast('Saved');
+  }, { date: todayISO(), severity: 'Moderate', type: 'Migraine' });
+}
+function healthEventEdit(id) {
+  data.health.events = data.health.events || [];
+  const e = (data.health.events || []).find(x => x.id === id);
+  if (!e) return;
+  openGenericModal('Edit health event', healthEventFields, (v) => {
+    Object.assign(e, v);
+    saveData(); render(); toast('Saved');
+  }, e);
+}
+function healthEventDel(id) {
+  if (!confirm('Delete this health event?')) return;
+  data.health.events = (data.health.events || []).filter(x => x.id !== id);
+  saveData(); render(); toast('Deleted');
+}
+
+async function downscaleImageToDataUrl(file, maxPx = 1200, quality = 0.78) {
+  const dataUrl = await new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+  const img = await new Promise((resolve, reject) => {
+    const i = new Image();
+    i.onload = () => resolve(i);
+    i.onerror = reject;
+    i.src = dataUrl;
+  });
+  const w = img.naturalWidth || img.width;
+  const h = img.naturalHeight || img.height;
+  const scale = Math.min(1, maxPx / Math.max(w, h));
+  const cw = Math.max(1, Math.round(w * scale));
+  const ch = Math.max(1, Math.round(h * scale));
+  const canvas = document.createElement('canvas');
+  canvas.width = cw; canvas.height = ch;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, cw, ch);
+  return canvas.toDataURL('image/jpeg', quality);
+}
+
+function measurementAdd() {
+  data.health.measurements = data.health.measurements || [];
+  openGenericModal('Add progress entry', measurementFields, async (v) => {
+    v.id = uid();
+    v.photos = [];
+
+    const fileEl = document.getElementById('measurement-photos');
+    if (fileEl && fileEl.files && fileEl.files.length) {
+      for (const f of [...fileEl.files].slice(0, 6)) {
+        try {
+          const dataUrl = await downscaleImageToDataUrl(f);
+          v.photos.push({ name: f.name, dataUrl });
+        } catch (e) {
+          console.warn('photo load failed', e);
+        }
+      }
+    }
+
+    data.health.measurements.push(v);
+    saveData(); render(); toast('Saved');
+  }, { date: todayISO() });
+
+  // add photo picker below generic modal fields
+  const wrap = document.getElementById('generic-fields');
+  if (wrap && !document.getElementById('measurement-photos')) {
+    wrap.insertAdjacentHTML('beforeend', `
+      <div class="field full">
+        <label>Photos (optional)</label>
+        <input id="measurement-photos" type="file" accept="image/*" multiple />
+        <div class="hint">Stored locally in your browser. Keep it light (a few photos per month) to avoid storage limits.</div>
+      </div>
+    `);
+  }
+}
+
+function measurementEdit(id) {
+  data.health.measurements = data.health.measurements || [];
+  const m = (data.health.measurements || []).find(x => x.id === id);
+  if (!m) return;
+  openGenericModal('Edit progress entry', measurementFields, async (v) => {
+    Object.assign(m, v);
+
+    const fileEl = document.getElementById('measurement-photos');
+    if (fileEl && fileEl.files && fileEl.files.length) {
+      m.photos = m.photos || [];
+      for (const f of [...fileEl.files].slice(0, 6)) {
+        try {
+          const dataUrl = await downscaleImageToDataUrl(f);
+          m.photos.push({ name: f.name, dataUrl });
+        } catch (e) { console.warn('photo load failed', e); }
+      }
+    }
+
+    saveData(); render(); toast('Saved');
+  }, m);
+
+  const wrap = document.getElementById('generic-fields');
+  if (wrap && !document.getElementById('measurement-photos')) {
+    wrap.insertAdjacentHTML('beforeend', `
+      <div class="field full">
+        <label>Add more photos (optional)</label>
+        <input id="measurement-photos" type="file" accept="image/*" multiple />
+        <div class="hint">Existing photos are kept. New photos will be appended.</div>
+      </div>
+    `);
+  }
+}
+
+function measurementDel(id) {
+  if (!confirm('Delete this progress entry (and photos)?')) return;
+  data.health.measurements = (data.health.measurements || []).filter(x => x.id !== id);
   saveData(); render(); toast('Deleted');
 }
 
